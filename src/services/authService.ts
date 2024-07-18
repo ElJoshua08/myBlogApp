@@ -6,16 +6,20 @@ export const login = async (email: string, password: string) => {
   return await account.get();
 };
 
+
 export const register = async (
+  name: string,
   email: string,
   password: string,
-  name: string
 ) => {
-  await account.create(ID.unique(), email, password, name);
-  console.log('We are registering you');
-  login(email, password);
+  try {
+    const user = await account.create(ID.unique(), email, password, name);
 
-  return await account.get();
+    return user;
+  } catch (error) {
+    console.error("Error during registration:", error);
+    throw error;
+  }
 };
 
 export const logout = async () => {
