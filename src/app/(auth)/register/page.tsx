@@ -7,7 +7,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -42,17 +43,20 @@ const RegisterPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center gap-20 bg-gray-900 p-2">
-      <h1 className="font-pacifico text-4xl font-semibold text-white">
+    <main className="flex flex-col items-center justify-center gap-5">
+      <h1 className="mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md">
         Register
       </h1>
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <input
           type="text"
           placeholder="Name"
           {...formRegister("name")}
-          className="rounded border border-gray-300 p-2"
+          className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
         />
         {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
@@ -60,7 +64,7 @@ const RegisterPage = () => {
           type="email"
           placeholder="Email"
           {...formRegister("email")}
-          className="rounded border border-gray-300 p-2"
+          className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
@@ -69,16 +73,16 @@ const RegisterPage = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             {...formRegister("password")}
-            className="rounded border border-gray-300 p-2 w-full"
+            className="w-full rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
           />
           {showPassword ? (
-            <FaEye
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-500"
+            <FaRegEye
+              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-blue-300"
               onClick={() => setShowPassword(!showPassword)}
             />
           ) : (
-            <FaEyeSlash
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-500"
+            <FaRegEyeSlash
+              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
               onClick={() => setShowPassword(!showPassword)}
             />
           )}
@@ -91,18 +95,19 @@ const RegisterPage = () => {
 
         <button
           type="submit"
-          className={`rounded bg-blue-500 p-2 text-white ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+          className={`flex items-center justify-center gap-5 rounded bg-blue-500 p-2 text-lg text-white shadow-lg shadow-transparent transition-all hover:shadow-blue-500/70 ${isLoading ? "opacity-50" : ""}`}
           disabled={isLoading}
         >
           Create your account!
+          {isLoading && <FaSpinner className="animate-spin" />}
         </button>
       </form>
 
-      <p className="flex items-center gap-2 text-gray-600">
+      <p className="flex items-center gap-2 text-left text-sm text-gray-600">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="text-gray-300 transition-colors hover:text-blue-300"
+          className="text-gray-400 transition-colors hover:text-blue-500"
         >
           Login here
         </Link>

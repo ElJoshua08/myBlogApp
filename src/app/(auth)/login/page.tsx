@@ -43,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-start gap-2 bg-gray-50/20 px-3 py-4">
+    <main className="flex flex-col items-center justify-center gap-5">
       <h1 className="mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md">
         Login
       </h1>

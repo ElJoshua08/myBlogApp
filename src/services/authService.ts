@@ -3,6 +3,7 @@
 import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const login = async (email: string, password: string) => {
   console.log("Logging in", email, password);
@@ -20,6 +21,8 @@ export const login = async (email: string, password: string) => {
     });
     
     console.log("Logged in");
+
+    redirect("/")
   } catch (error) {
     console.error("Error during login:", error);
     throw error;
@@ -45,6 +48,7 @@ export const register = async (
       secure: true,
     });
 
+    redirect("/");
   } catch (error) {
     console.error("Error during registration:", error);
     throw error;
