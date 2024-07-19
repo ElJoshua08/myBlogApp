@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
@@ -12,21 +12,20 @@ export const login = async (email: string, password: string) => {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
 
-    
     cookies().set("appwrite-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
       secure: true,
     });
-    
+
     console.log("Logged in");
 
-    redirect("/")
+    redirect("/");
   } catch (error) {
     console.error("Error during login:", error);
     throw error;
-  }  
+  }
 };
 
 export const register = async (
@@ -35,7 +34,6 @@ export const register = async (
   password: string,
 ) => {
   try {
-
     const { account } = await createAdminClient();
 
     await account.create(ID.unique(), email, password, name);
@@ -53,7 +51,7 @@ export const register = async (
     console.error("Error during registration:", error);
     throw error;
   }
-}
+};
 
 export const logout = async () => {
   try {
@@ -69,7 +67,7 @@ export const logout = async () => {
   }
 };
 
-export const getLoggedInUser = async () => {
+export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
     return await account.get();

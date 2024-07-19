@@ -34,7 +34,7 @@ const RegisterPage = () => {
       setIsLoading(true);
       await registerService(name, email, password);
 
-      router.push("/  ");
+      router.push("/");
     } catch (err) {
       setError("Failed to register. Please try again.");
     } finally {
