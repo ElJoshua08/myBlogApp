@@ -1,4 +1,3 @@
-import { account } from '@/appwrite';
 "use server";
 import { Client, Account } from "node-appwrite";
 import { cookies } from "next/headers";
