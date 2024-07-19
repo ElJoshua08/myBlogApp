@@ -1,11 +1,30 @@
-import { account, ID } from '@/lib/appwrite';
+"use server"
+
+import { createSessionClient, createAdminClient } from "@/lib/appwrite";
+import { ID } from "node-appwrite";
+import { cookies } from "next/headers";
 
 export const login = async (email: string, password: string) => {
-  const session = await account.createEmailPasswordSession(email, password);
+  console.log("Logging in", email, password);
 
-  return await account.get();
+  try {
+    const { account } = await createAdminClient();
+    const session = await account.createEmailPasswordSession(email, password);
+
+    
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+    
+    console.log("Logged in");
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }  
 };
-
 
 export const register = async (
   name: string,
@@ -13,15 +32,44 @@ export const register = async (
   password: string,
 ) => {
   try {
-    const user = await account.create(ID.unique(), email, password, name);
 
-    return user;
+    const { account } = await createAdminClient();
+
+    await account.create(ID.unique(), email, password, name);
+    const session = await account.createEmailPasswordSession(email, password);
+
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
   } catch (error) {
     console.error("Error during registration:", error);
     throw error;
   }
-};
+}
 
 export const logout = async () => {
-  await account.deleteSession('current');
+  try {
+    const { account } = await createSessionClient();
+
+    cookies().delete("appwrite-session");
+    await account.deleteSession("current");
+
+    console.log("Logged out");
+  } catch (error) {
+    console.error("Error during logout:", error);
+    throw error;
+  }
 };
+
+export const getLoggedInUser = async () => {
+  try {
+    const { account } = await createSessionClient();
+    return await account.get();
+  } catch (error) {
+    return null;
+  }
+}

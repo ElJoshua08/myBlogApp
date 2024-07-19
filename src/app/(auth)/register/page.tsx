@@ -6,12 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
+  const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register: formRegister,
@@ -26,8 +31,9 @@ const RegisterPage = () => {
 
     try {
       setIsLoading(true);
-      const user =await registerService(name, email, password);
-      console.log(user);
+      await registerService(name, email, password);
+
+      router.push("/  ");
     } catch (err) {
       setError("Failed to register. Please try again.");
     } finally {
@@ -58,12 +64,25 @@ const RegisterPage = () => {
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-        <input
-          type="password"
-          placeholder="Password"
-          {...formRegister("password")}
-          className="rounded border border-gray-300 p-2"
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            {...formRegister("password")}
+            className="rounded border border-gray-300 p-2 w-full"
+          />
+          {showPassword ? (
+            <FaEye
+              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          ) : (
+            <FaEyeSlash
+              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+        </div>
         {errors.password && (
           <p className="text-red-500">{errors.password.message}</p>
         )}
