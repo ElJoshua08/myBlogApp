@@ -1,7 +1,5 @@
-"use client"
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FaHome, FaStar, FaUser } from "react-icons/fa";
 
 export const Header = () => {
@@ -44,9 +42,6 @@ export const Header = () => {
 };
 
 const NavItem = ({ item }: NavItemProps) => {
-  // Check if the item is active
-  const router = useRouter();
-  const isActive = router.pathname === item.href;
 
 
   
