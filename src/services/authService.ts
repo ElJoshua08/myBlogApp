@@ -3,25 +3,19 @@
 import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { parseStringify } from "@/lib/utils";
 
 export const login = async (email: string, password: string) => {
-  console.log("Logging in", email, password);
-
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
 
-    cookies().set("appwrite-session", session.secret, {
+    cookies().set("authData-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
       secure: true,
     });
-
-    console.log("Logged in");
-
-    redirect("/");
   } catch (error) {
     console.error("Error during login:", error);
     throw error;
@@ -39,14 +33,13 @@ export const register = async (
     await account.create(ID.unique(), email, password, name);
     const session = await account.createEmailPasswordSession(email, password);
 
-    cookies().set("appwrite-session", session.secret, {
+    cookies().set("authData-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
       secure: true,
     });
 
-    redirect("/");
   } catch (error) {
     console.error("Error during registration:", error);
     throw error;
@@ -57,7 +50,7 @@ export const logout = async () => {
   try {
     const { account } = await createSessionClient();
 
-    cookies().delete("appwrite-session");
+    cookies().delete("authData-session");
     await account.deleteSession("current");
 
     console.log("Logged out");
@@ -70,7 +63,8 @@ export const logout = async () => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const user = await account.get();
+    return parseStringify(user);
   } catch (error) {
     return null;
   }

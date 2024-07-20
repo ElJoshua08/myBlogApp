@@ -2,28 +2,23 @@
 import { getLoggedInUser } from "@/services/authService";
 import { Pacifico } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const pacifico = Pacifico({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
-  let user;
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       const user = await getLoggedInUser();
-      console.log("user", user);
+      setUser(user);
     };
 
     getUser();
-  }, []);
+  }, [setUser]);
 
-  if (!user) {
-    console.log("no user found");
-  } else {
-    console.log("logged user", user);
-  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between bg-gray-700 p-24">

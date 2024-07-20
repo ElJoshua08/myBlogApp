@@ -14,33 +14,30 @@ import { useRouter } from "next/navigation";
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
-   const router = useRouter();
-   const [error, setError] = useState<string | null>(null);
-   const [isLoading, setIsLoading] = useState(false);
-   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-   const {
-     register,
-     handleSubmit,
-     formState: { errors },
-   } = useForm<LoginFormInputs>({
-     resolver: zodResolver(loginSchema),
-   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginSchema),
+  });
 
-   const onSubmit = async (data: LoginFormInputs) => {
-     try {
-       setIsLoading(true);
-       await login(data.email, data.password);
-
-       // Handle successful login
-       console.log("Logged in");
-       router.push("/register");
-       console.log("Redirected");
-     } catch (err) {
-       setError("Invalid email or password");
-       setIsLoading(false);
-     }
-   };
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      setIsLoading(true);
+      await login(data.email, data.password);
+      
+      router.push("/");
+    } catch (err) {
+      setError("Invalid email or password");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <main className="flex flex-col items-center justify-center gap-5">
@@ -49,7 +46,7 @@ const LoginPage = () => {
       </h1>
 
       <form
-        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200/30 backdrop-blur-md px-6 py-5"
+        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200/30 px-6 py-5 backdrop-blur-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col gap-1">
