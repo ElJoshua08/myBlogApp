@@ -15,11 +15,11 @@ export const Header = () => {
       href: "/",
       icon: <FaHome />,
     },
-    {
-      name: "Favorites",
-      href: "/favorites",
-      icon: <FaStar />,
-    },
+    // {
+    //   name: "Favorites",
+    //   href: "/favorites",
+    //   icon: <FaStar />,
+    // },
     user
       ? {
           name: "Account",
@@ -30,7 +30,7 @@ export const Header = () => {
   ];
 
   return (
-    <div className="mb-5 flex w-full items-center justify-between rounded-md bg-slate-200/50 backdrop-blur-md">
+    <div className="mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 backdrop-blur-md sticky top-0 z-10 shadow-slate-300/60 shadow-md">
       {/* Logo */}
       <div className="flex items-center justify-center">
         <Image src={"/logo/logo.svg"} width={48} height={48} alt="logo" />
@@ -61,9 +61,8 @@ const NavItem = ({ item }: NavItemProps) => {
   const pathname = usePathname();
 
   const isActive = pathname === item.href;
-
-  console.log(pathname);
-
+  const isHome = pathname === "/";
+  
   return (
     <li className="flex items-center">
       <Link

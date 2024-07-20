@@ -7,30 +7,11 @@ export default function Home() {
   const user = useAuthenticatedUser();
   const router = useRouter();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="relative flex min-h-screen flex-col items-center justify-between">
       {/* Latest posts */}
-      <h1 className={`text-4xl font-semibold font-pacifico`}>
-        Welcome to my blog!
+      <h1 className={`font-pacifico text-4xl font-semibold absolute top-0 left-0 mt-3 ml-3`}>
+        Welcome back <span className="text-primary-dark">{user?.name}</span>
       </h1>
-
-      <p>User found: {user ? user.name : "No user found"}</p>
-
-      <p>Home page</p>
-
-      <button
-        onClick={() => {
-          router.push("/login");
-        }}
-      >
-        Login
-      </button>
-      <button
-        onClick={() => {
-          router.push("/register");
-        }}
-      >
-        Register
-      </button>
     </main>
   );
 }
