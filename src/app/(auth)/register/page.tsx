@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { register as registerService } from "@/services/authService";
+import { getLoggedInUser, register as registerService } from "@/services/authService";
 import { registerSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,11 +9,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
   const router = useRouter();
+  const user = useAuthenticatedUser();
+
+  if (user) {
+    router.push("/");
+  }
+
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

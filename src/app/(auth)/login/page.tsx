@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
-import { getLoggedInUser, login } from "@/services/authService";
+import {  useState } from "react";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { login } from "@/services/authService";
 import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,12 @@ const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const user = useAuthenticatedUser();
+
+  if (user) {
+    router.push("/"); 
+  }
+
 
   const {
     register,
@@ -31,7 +38,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       await login(data.email, data.password);
-      
+
       router.push("/");
     } catch (err) {
       setError("Invalid email or password");
@@ -121,12 +128,5 @@ interface InputProps {
   placeholder: string;
   className: string;
 }
-
-const InputCompoent = ({
-  label,
-  type,
-  placeholder,
-  className,
-}: InputProps) => {};
 
 export default LoginPage;

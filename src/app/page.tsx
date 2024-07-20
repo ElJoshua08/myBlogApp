@@ -1,4 +1,5 @@
 "use client"
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { getLoggedInUser } from "@/services/authService";
 import { Pacifico } from "next/font/google";
 import { useRouter } from "next/navigation";
@@ -7,19 +8,8 @@ import { useEffect, useState } from "react";
 const pacifico = Pacifico({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
+  const user = useAuthenticatedUser();
   const router = useRouter();
-
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getLoggedInUser();
-      setUser(user);
-    };
-
-    getUser();
-  }, [setUser]);
-
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between bg-gray-700 p-24">
       {/* Latest posts */}
