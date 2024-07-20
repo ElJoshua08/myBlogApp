@@ -1,19 +1,15 @@
 "use client"
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
-import { getLoggedInUser } from "@/services/authService";
-import { Pacifico } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-const pacifico = Pacifico({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
   const user = useAuthenticatedUser();
   const router = useRouter();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-gray-700 p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       {/* Latest posts */}
-      <h1 className={`text-4xl font-semibold ${pacifico.className}`}>
+      <h1 className={`text-4xl font-semibold font-pacifico`}>
         Welcome to my blog!
       </h1>
 

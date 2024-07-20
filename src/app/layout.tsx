@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Pacifico } from "next/font/google";
+import { Header } from "@/components/Header";
 import "./globals.css";
+import Head from "next/head";
 
-const pacifico = Pacifico({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "My blog page",
+  authors: [
+    {
+      name: "El joshua",
+    }
+  ],
 };
 
 export default function RootLayout({
@@ -15,7 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <Head>
+        <link rel="icon" href="/logo/logo.svg" />
+      </Head>
+      <body className="flex min-h-screen w-full flex-col p-4">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

@@ -8,9 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          light: "#CAF4FF",
+          DEFAULT: "#A0DEFF",
+          dark: "#5AB2FF",
+        },
+        accent: {
+          DEFUALT: "#FF9B66",
+        },
+      },
+
       fontFamily: {
-        pacifico: ['Pacifico', 'sans-serif'],
-      }
+        pacifico: ["Pacifico", "sans-serif"],
+      },
     },
   },
   plugins: [],

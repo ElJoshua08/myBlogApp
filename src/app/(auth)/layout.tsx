@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-2 bg-gray-50/20 px-3 py-4 -z-10">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-2 px-3 py-4 -z-10">
       <Image
         src="/waves/waveTop.svg"
         alt=""
