@@ -61,8 +61,7 @@ const NavItem = ({ item }: NavItemProps) => {
   const pathname = usePathname();
 
   const isActive = pathname === item.href;
-  const isHome = pathname === "/";
-  
+
   return (
     <li className="flex items-center">
       <Link

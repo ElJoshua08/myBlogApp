@@ -21,6 +21,8 @@ const config: Config = {
 
       fontFamily: {
         pacifico: ["Pacifico", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+        nunito: ["Nunito", "sans-serif"],
       },
     },
   },

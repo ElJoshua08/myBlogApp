@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/Header";
 import "./globals.css";
-import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "My blog page",
@@ -10,6 +8,9 @@ export const metadata: Metadata = {
       name: "El joshua",
     },
   ],
+  icons: {
+    icon: "/logo/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -19,9 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/logo/logo.svg" />
-      </Head>
       <body>{children}</body>
     </html>
   );
