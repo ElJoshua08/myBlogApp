@@ -5,7 +5,7 @@ import { ID } from "node-appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 
-export const login = async (email: string, password: string) => {
+export const login = async ({ email, password }: LoginProps) => {
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
@@ -22,11 +22,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const register = async (
-  name: string,
-  email: string,
-  password: string,
-) => {
+export const register = async ({ name, email, password }: RegisterProps) => {
   try {
     const { account } = await createAdminClient();
 
@@ -68,4 +64,15 @@ export async function getLoggedInUser() {
   } catch (error) {
     return null;
   }
+}
+
+interface LoginProps {
+  email: string;
+  password: string;
+}
+
+interface RegisterProps {
+  name: string;
+  email: string;
+  password: string;
 }
