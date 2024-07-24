@@ -6,7 +6,7 @@ import { Post } from "@/components/Post";
 export default function Home() {
   const user = useAuthenticatedUser();
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-start">
+    <main className="relative flex min-h-screen flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1
         className={`left-0 top-0 ml-3 mt-3 font-pacifico text-6xl font-normal self-start text-slate-800`}
