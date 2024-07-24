@@ -4,7 +4,7 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { FaHome, FaStar, FaUser } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 
 export const Header = () => {
   const user = useAuthenticatedUser();

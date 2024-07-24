@@ -1,6 +1,7 @@
 "use client";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
+import { Post } from "@/components/Post";
 
 export default function Home() {
   const user = useAuthenticatedUser();
@@ -17,26 +18,10 @@ export default function Home() {
         </span>
       </h1>
       {/* Latest posts */}
-      <div className="mt-10 flex flex-col gap-4">
+      <div className="mt-10 flex flex-col gap-4 px-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {/* Post */}
-          <div className="flex flex-col rounded-lg border border-slate-200 bg-white p-4 shadow-md">
-            <h3 className="text-xl font-semibold font-roboto">
-              How to build a blog with Next.js and Appwrite
-            </h3>
-            <p className="text-gray-400 font-nunito">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              molestie, nisl vel ultricies mattis, orci neque aliquet nisi, ac
-              tincidunt nisi nisl eu nisl. Sed euismod, nisl vel ultricies
-              mattis, orci neque aliquet nisi, ac tincidunt nisi nisl eu nisl.
-              Sed euismod, nisl vel ultricies mattis, orci neque aliquet nisi,
-              ac tincidunt nisi nisl eu nisl. Sed euismod, nisl vel ultricies
-              mattis, orci neque aliquet nisi, ac tincidunt nisi nisl eu nisl.
-              Sed euismod, nisl vel ultricies mattis, orci neque aliquet nisi,
-              ac tincidunt nisi nisl eu nisl. Sed euismod, nisl vel ultricies
-              mattis, orci neque aliquet nisi, ac tincidunt nisi nisl eu nisl.
-            </p>
-          </div>
+        <Post />
         </div>
       </div>
     </main>
