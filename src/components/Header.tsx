@@ -75,10 +75,10 @@ const NavItem = ({ item }: NavItemProps) => {
     <li className="flex items-center">
       <Link
         href={item.href}
-        className={`flex items-center gap-2 rounded-md px-2 py-1 text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
+        className={`flex items-center gap-2 rounded-md p-2 sm:px-2 sm:py-1 text-2xl sm:text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
       >
         {item.icon}
-        {item.name}
+        <span className="hidden sm:flex">{item.name}</span>
       </Link>
     </li>
   );
