@@ -75,7 +75,7 @@ const NavItem = ({ item }: NavItemProps) => {
     <li className="flex items-center">
       <Link
         href={item.href}
-        className={`flex items-center gap-2 rounded-md px-2 py-1 text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-gray-500 hover:bg-blue-200/60"}`}
+        className={`flex items-center gap-2 rounded-md px-2 py-1 text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
       >
         {item.icon}
         {item.name}
