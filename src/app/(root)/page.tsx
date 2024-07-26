@@ -3,6 +3,8 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getPosts } from "@/services/postService";
+import Link from "next/link";
+import { FaPlus } from "react-icons/fa";
 
 export default function Home() {
   const user = useAuthenticatedUser();
@@ -23,7 +25,7 @@ export default function Home() {
   console.log(posts);
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-start pb-5">
+    <main className="relative flex-grow flex flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1
         className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-800`}
@@ -58,6 +60,11 @@ export default function Home() {
           ))
         )}
       </div>
+
+      {/* Create new post */}
+      <Link href="posts/create" className="flex items-center justify-center gap-2 absolute rounded-md p-2 text-2xl text-gray-50 transition-colors bg-accent bottom-0 right-0 mb-5 mr-5">
+        Create Post <FaPlus />
+      </Link>
     </main>
   );
 }
