@@ -30,11 +30,11 @@ export const Header = () => {
   ];
 
   return (
-    <div className="mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 backdrop-blur-md sticky top-0 z-10 shadow-slate-300/60 shadow-md">
+    <div className="sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 shadow-md shadow-slate-300/60 backdrop-blur-md">
       {/* Logo */}
       <div className="flex items-center justify-center">
         <Image src={"/logo/logo.svg"} width={48} height={48} alt="logo" />
-        <h1 className="font-pacifico text-2xl font-semibold tracking-wide text-accent-DEFUALT">
+        <h1 className="text-accent font-pacifico text-2xl font-semibold tracking-wide">
           My blog
         </h1>
       </div>
@@ -47,7 +47,7 @@ export const Header = () => {
           )}
 
           {!user && (
-            <button className="flex items-center gap-2 rounded-md border-2 border-blue-300 bg-white px-2 py-1 text-gray-400 transition-colors hover:bg-blue-300 hover:text-white">
+            <button className="bg-accent flex items-center gap-2 rounded-md px-2 py-1 text-gray-400 transition-colors hover:bg-blue-300 hover:text-white">
               <Link href="/login">Login</Link>
             </button>
           )}
