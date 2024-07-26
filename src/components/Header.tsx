@@ -4,7 +4,7 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaHome, FaStar, FaUser } from "react-icons/fa";
 
 export const Header = () => {
   const user = useAuthenticatedUser();
@@ -15,11 +15,11 @@ export const Header = () => {
       href: "/",
       icon: <FaHome />,
     },
-    // {
-    //   name: "Favorites",
-    //   href: "/favorites",
-    //   icon: <FaStar />,
-    // },
+    {
+      name: "Favorites",
+      href: "/favorites",
+      icon: <FaStar />,
+    },
     user
       ? {
           name: "Account",
@@ -33,7 +33,13 @@ export const Header = () => {
     <div className="sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 shadow-md shadow-slate-300/60 backdrop-blur-md">
       {/* Logo */}
       <div className="flex items-center justify-center">
-        <Image src={"/logo/logo.svg"} width={48} height={48} alt="logo" />
+        <Image
+          src={"/logo/logo.svg"}
+          width={0}
+          height={0}
+          alt="logo"
+          className="size-16"
+        />
         <h1 className="text-accent font-pacifico text-2xl font-semibold tracking-wide">
           My blog
         </h1>
@@ -41,15 +47,18 @@ export const Header = () => {
 
       {/* Nav */}
       <nav className="mr-5 flex">
-        <ul className="flex items-center gap-4">
+        <ul className="flex items-center gap-2">
           {navItems.map(
             (item) => item !== null && <NavItem item={item} key="item.name" />,
           )}
 
           {!user && (
-            <button className="bg-accent flex items-center gap-2 rounded-md px-2 py-1 text-gray-400 transition-colors hover:bg-blue-300 hover:text-white">
-              <Link href="/login">Login</Link>
-            </button>
+            <Link
+              href="/login"
+              className="bg-accent ml-4 flex items-center justify-center gap-2 rounded-md px-2 py-1 text-2xl text-gray-100 transition-colors hover:text-white"
+            >
+              Login
+            </Link>
           )}
         </ul>
       </nav>
@@ -66,7 +75,7 @@ const NavItem = ({ item }: NavItemProps) => {
     <li className="flex items-center">
       <Link
         href={item.href}
-        className={`flex items-center gap-2 text-gray-400 transition-colors hover:text-blue-500 ${isActive ? "text-blue-500" : ""}`}
+        className={`flex items-center gap-2 rounded-md px-2 py-1 text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-gray-500 hover:bg-blue-200/60"}`}
       >
         {item.icon}
         {item.name}
