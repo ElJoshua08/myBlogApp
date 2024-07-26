@@ -1,18 +1,20 @@
 "use client";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
-import { Post } from "@/components/Post";
 import { useEffect, useState } from "react";
 import { getPosts } from "@/services/postService";
 
 export default function Home() {
   const user = useAuthenticatedUser();
   const [posts, setPosts] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setIsLoading(true);
       const fetchedPosts = await getPosts();
       setPosts(fetchedPosts);
+      setIsLoading(false);
     };
 
     fetchPosts();
@@ -41,8 +43,28 @@ export default function Home() {
           {user ? user.name : "Guest"}
         </span>
       </h1>
-      {/* Latest posts */}
-      <div className="mt-10 flex flex-col gap-4 px-4"></div>
+      {/* Posts */}
+      <div className="mt-10 flex flex-grow flex-col flex-wrap gap-4">
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
+          </div>
+        ) : (
+          posts.map(({ postName, postContent, postDate, id }: PostProps) => (
+            <div key={id} className="flex flex-col gap-4 bg-red-500 p-4">
+              <h1>{postName}</h1>
+              <p>{postContent}</p>
+            </div>
+          ))
+        )}
+      </div>
     </main>
   );
+}
+
+interface PostProps {
+  postName: string;
+  postContent: string;
+  postDate: string;
+  id: string;
 }
