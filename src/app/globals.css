@@ -6,3 +6,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.header {
+  @apply mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md;
+}

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import ActionButton from "@/components/ActionButton";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -50,7 +51,7 @@ const RegisterPage = () => {
 
   return (
     <main className="flex flex-col items-center justify-center gap-5">
-      <h1 className="mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md">
+      <h1 className="header">
         Register
       </h1>
 
@@ -99,14 +100,13 @@ const RegisterPage = () => {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <button
-          type="submit"
-          className={`flex items-center justify-center gap-5 rounded bg-blue-500 p-2 text-lg text-white shadow-lg shadow-transparent transition-all hover:shadow-blue-500/70 ${isLoading ? "opacity-50" : ""}`}
-          disabled={isLoading}
+        <ActionButton
+          onClick={handleSubmit(onSubmit)}
+          className={isLoading ? "opacity-50" : ""}
         >
           Create your account!
           {isLoading && <FaSpinner className="animate-spin" />}
-        </button>
+        </ActionButton>
       </form>
 
       <p className="flex items-center gap-2 text-left text-sm text-gray-600">

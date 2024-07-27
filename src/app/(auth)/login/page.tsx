@@ -11,6 +11,7 @@ import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import ActionButton from "@/components/ActionButton";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -49,7 +50,7 @@ const LoginPage = () => {
 
   return (
     <main className="flex flex-col items-center justify-center gap-5">
-      <h1 className="mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md">
+      <h1 className="header">
         Login
       </h1>
 
@@ -101,14 +102,13 @@ const LoginPage = () => {
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
-        <button
-          type="submit"
-          className={`flex items-center justify-center gap-5 rounded bg-blue-500 p-2 text-lg text-white shadow-lg shadow-transparent transition-all hover:shadow-blue-500/70 ${isLoading ? "opacity-50" : ""}`}
-          disabled={isLoading}
+        <ActionButton
+          onClick={handleSubmit(onSubmit)}
+          className={isLoading ? "opacity-50" : ""}
         >
           Login
           {isLoading && <FaSpinner className="animate-spin" />}
-        </button>
+        </ActionButton>
       </form>
       <p className="flex items-center gap-2 text-left text-sm text-gray-600">
         Dont have an account?{" "}

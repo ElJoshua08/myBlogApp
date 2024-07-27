@@ -8,13 +8,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import ActionButton from "@/components/ActionButton";
 
 type CreatePostFormInputs = z.infer<typeof postSchema>;
 
 export default function CreatePostPage() {
   const user = useAuthenticatedUser();
   const router = useRouter();
-
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export default function CreatePostPage() {
     const { title, content } = data;
 
     try {
-      const userID = user.$id
+      const userID = user.$id;
       console.log("userID", userID);
 
       setIsLoading(true);
@@ -47,9 +47,9 @@ export default function CreatePostPage() {
     }
   };
 
-  return (
-    <div>
-      <h1>Create Post</h1>
+  return user ? (
+    <div className="flex w-full flex-col gap-5 flex-grow items-center justify-center">
+      <h1 className="header">Create Post</h1>
 
       <form
         className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"
@@ -82,6 +82,16 @@ export default function CreatePostPage() {
           {isLoading && <FaSpinner className="animate-spin" />}
         </button>
       </form>
+    </div>
+  ) : (
+    <div>
+        <h1>Please login before creating a post</h1>
+        <ActionButton
+          onClick={() => router.push("/login")}
+          className="mt-5"
+        >
+          Login
+        </ActionButton>
     </div>
   );
 }
