@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
