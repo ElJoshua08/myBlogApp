@@ -3,11 +3,14 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getPosts } from "@/services/postService";
-import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
+import ActionButton from "@/components/ActionButton";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const user = useAuthenticatedUser();
+
   const [posts, setPosts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,10 +63,10 @@ export default function Home() {
         )}
       </div>
 
-      {/* Create new post */}
-      <Link href="posts/create" className="flex items-center justify-center gap-2 absolute rounded-md p-2 text-2xl text-gray-50 transition-colors bg-accent bottom-0 right-0 mb-5 mr-5">
-        Create Post <FaPlus />
-      </Link>
+      {/* Create new post */} 
+      <ActionButton onClick={() => router.push("/posts/create")} className="absolute !bg-accent hover:!shadow-accent/70 bottom-0 right-0 mb-5 mr-5">
+        Create Post <FaPlus className="inline-block" />
+      </ActionButton>
     </main>
   );
 }

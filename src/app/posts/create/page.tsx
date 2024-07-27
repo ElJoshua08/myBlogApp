@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
+import Link from "next/link";
 
 type CreatePostFormInputs = z.infer<typeof postSchema>;
 
@@ -40,6 +41,7 @@ export default function CreatePostPage() {
 
       setIsLoading(true);
       await createPost({ title, content, userID });
+      router.push("/");
     } catch (err) {
       setError("Failed to create post. Please try again.");
     } finally {
@@ -48,8 +50,8 @@ export default function CreatePostPage() {
   };
 
   return user ? (
-    <div className="flex w-full flex-col gap-5 flex-grow items-center justify-center">
-      <h1 className="header">Create Post</h1>
+    <div className="flex w-full flex-grow flex-col items-center justify-center">
+      <h1 className="header mb-5">Create Post</h1>
 
       <form
         className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"
@@ -82,16 +84,20 @@ export default function CreatePostPage() {
           {isLoading && <FaSpinner className="animate-spin" />}
         </button>
       </form>
+
+      <Link
+        href="/"
+        className="mt-5 items-start font-nunito text-sm text-gray-400 hover:text-blue-500 text-left"
+      >
+        Return to home
+      </Link>
     </div>
   ) : (
     <div>
-        <h1>Please login before creating a post</h1>
-        <ActionButton
-          onClick={() => router.push("/login")}
-          className="mt-5"
-        >
-          Login
-        </ActionButton>
+      <h1>Please login before creating a post</h1>
+      <ActionButton onClick={() => router.push("/login")} className="mt-5">
+        Login
+      </ActionButton>
     </div>
   );
 }

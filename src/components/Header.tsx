@@ -40,7 +40,7 @@ export const Header = () => {
           alt="logo"
           className="size-16"
         />
-        <h1 className="text-accent font-pacifico text-2xl font-semibold tracking-wide hidden sm:flex">
+        <h1 className="hidden font-pacifico text-2xl font-semibold tracking-wide text-accent sm:flex">
           My blog
         </h1>
       </div>
@@ -55,7 +55,7 @@ export const Header = () => {
           {!user && (
             <Link
               href="/login"
-              className="bg-accent ml-4 flex items-center justify-center gap-2 rounded-md px-2 py-1 text-2xl text-gray-100 transition-colors hover:text-white"
+              className="ml-4 flex items-center justify-center gap-2 rounded-md bg-accent px-2 py-1 text-2xl text-gray-100 transition-colors hover:text-white"
             >
               Login
             </Link>
@@ -75,7 +75,7 @@ const NavItem = ({ item }: NavItemProps) => {
     <li className="flex items-center">
       <Link
         href={item.href}
-        className={`flex items-center gap-2 rounded-md p-2 sm:px-2 sm:py-1 text-xl sm:text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
+        className={`flex items-center gap-2 rounded-md p-2 text-xl transition-all duration-150 sm:px-2 sm:py-1 sm:text-lg ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
       >
         {item.icon}
         <span className="hidden sm:flex">{item.name}</span>
