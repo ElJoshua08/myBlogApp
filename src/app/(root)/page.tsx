@@ -99,7 +99,7 @@ export default function Home() {
       {user && (
         <ActionButton
           onClick={() => router.push("/posts/create")}
-          className="absolute bottom-0 right-0 mb-5 mr-5 !bg-accent hover:!shadow-accent/70"
+          className="fixed bottom-0 right-0 mb-5 mr-5 !bg-accent hover:!shadow-accent/70"
         >
           <span className="hidden sm:inline">Create Post</span> <FaPlus className="inline-block" />
         </ActionButton>

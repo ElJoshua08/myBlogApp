@@ -27,7 +27,7 @@ export const Post = ({
           {title}
         </h3>
         {/* Post Content */}
-        <p className="mb-4 break-words font-nunito leading-tight text-gray-500 sm:text-lg sm:leading-none">
+        <p className="mb-4 break-words font-nunito leading-snug tracking-wide text-gray-600 sm:text-lg sm:leading-none">
           {content}
         </p>
       </div>
@@ -47,7 +47,7 @@ const FavoriteButton = ({ postID }: FavoriteButtonProps) => {
   const { user, loading: userLoading } = useAuthenticatedUser();
   const userID = useMemo(() => user?.$id, [user]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const handleClick = async () => {
