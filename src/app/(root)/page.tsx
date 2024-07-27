@@ -1,7 +1,7 @@
 "use client";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getPosts } from "@/services/postService";
 import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
@@ -19,6 +19,7 @@ const breakpointColumnsObj = {
 export default function Home() {
   const router = useRouter();
   const { user, loading: userLoading } = useAuthenticatedUser();
+  const userID = useMemo(() => user?.$id, [user]);
 
   const [posts, setPosts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function Home() {
 
     if (!user) {
       setIsLoading(false);
+      router.push("/login");
       return;
     }
 
@@ -46,11 +48,14 @@ export default function Home() {
     fetchPosts();
   }, [user, userLoading]);
 
+  
+  console.log("posts are:", posts);
+
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1
-        className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-4xl sm:text-6xl font-normal text-slate-800`}
+        className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-4xl font-normal text-slate-800 sm:text-6xl`}
       >
         Welcome {user && "back"}{" "}
         <span className="relative inline-flex text-primary-dark">
@@ -79,14 +84,18 @@ export default function Home() {
             columnClassName="my-masonry-grid_column"
           >
             {posts.map(
-              ({ title, content, $createdAt, id, isFavorite }: PostProps, index: number) => (
+              (
+                { title, content, $createdAt, favoriteTo, $id }: PostProps,
+                index: number,
+              ) => (
                 <Post
-                  key={id}
-                  id={id}
+                  key={$id}
+                  id={$id}
+                  userID={userID}
                   title={title}
+                  favoriteTo={favoriteTo}
                   content={content}
                   createdAt={parseToReadableDate(new Date($createdAt))}
-                  favoritesCount={0}
                   className="break-inside-avoid"
                   delay={index * 0.1}
                 />
@@ -101,7 +110,8 @@ export default function Home() {
           onClick={() => router.push("/posts/create")}
           className="fixed bottom-0 right-0 mb-5 mr-5 !bg-accent hover:!shadow-accent/70"
         >
-          <span className="hidden sm:inline">Create Post</span> <FaPlus className="inline-block" />
+          <span className="hidden sm:inline">Create Post</span>{" "}
+          <FaPlus className="inline-block" />
         </ActionButton>
       )}
     </main>
@@ -109,9 +119,9 @@ export default function Home() {
 }
 
 interface PostProps {
+  $id: string;
+  $createdAt: string;
   title: string;
   content: string;
-  $createdAt: string;
-  id: string;
-  isFavorite: boolean;
+  favoriteTo: Array<object>;
 }

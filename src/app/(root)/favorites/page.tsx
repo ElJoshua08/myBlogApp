@@ -16,19 +16,18 @@ const breakpointColumnsObj = {
 };
 
 export default function Favorites() {
-  const { user, loading } = useAuthenticatedUser();
+  const { user, loading: userLoading } = useAuthenticatedUser();
+  const userID = useMemo(() => user?.$id, [user]);
   const router = useRouter();
+
   const [posts, setPosts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Memoize the userID to avoid unnecessary re-renders
-  const userID = useMemo(() => user?.$id, [user]);
-
   useEffect(() => {
-    if (loading) return;
+    if (userLoading) return;
 
     if (!user) {
-      router.push("/login");
+      setIsLoading(false);
       return;
     }
 
@@ -45,7 +44,9 @@ export default function Favorites() {
     };
 
     fetchPosts();
-  }, [userID, loading, user, router]);
+  }, [user, userLoading, userID]);
+
+  console.log("posts are:", posts);
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
@@ -76,17 +77,22 @@ export default function Favorites() {
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {posts?.map(
-              ({ postName, postContent, $createdAt, id }: PostProps) => (
-                <div key={id} className="break-inside-avoid">
-                  <Post
-                    id={id}
-                    title={postName}
-                    content={postContent}
-                    createdAt={parseToReadableDate(new Date($createdAt))}
-                    favoritesCount={0}
-                  />
-                </div>
+            {posts.map(
+              (
+                { title, content, $createdAt, favoriteTo, $id }: PostProps,
+                index: number,
+              ) => (
+                <Post
+                  key={$id}
+                  id={$id}
+                  userID={userID}
+                  title={title}
+                  favoriteTo={[{ $id: userID }]}
+                  content={content}
+                  createdAt={parseToReadableDate(new Date($createdAt))}
+                  className="break-inside-avoid"
+                  delay={index * 0.23 < 1.3 ? index * 0.23 : 1.3}
+                />
               ),
             )}
           </Masonry>
@@ -97,8 +103,9 @@ export default function Favorites() {
 }
 
 interface PostProps {
-  postName: string;
-  postContent: string;
+  $id: string;
   $createdAt: string;
-  id: string;
+  title: string;
+  content: string;
+  favoriteTo: Array<object>;
 }

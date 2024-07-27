@@ -7,7 +7,7 @@ export default function LogoutPage() {
 
   setTimeout(() => {
     logout();
-    router.push("/");k
+    router.push("/");
   }, 1000);
   
   return (

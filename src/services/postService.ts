@@ -53,9 +53,10 @@ export const addFavoritePost = async ({
       userID,
     );
 
+    // Exclude system attributes and only include the fields you want to update
+    const { favoritePosts } = user;
     const updatedUser = {
-      ...user,
-      favoritePosts: [...user.favoritePosts, postID],
+      favoritePosts: [...favoritePosts, postID],
     };
 
     await database.updateDocument(
@@ -69,6 +70,7 @@ export const addFavoritePost = async ({
     throw error;
   }
 };
+
 
 export const createPost = async ({
   title,

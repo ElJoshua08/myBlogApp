@@ -1,19 +1,21 @@
 "use client";
-import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { addFavoritePost } from "@/services/postService";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export const Post = ({
   id,
+  userID,
   title,
   content,
   createdAt,
-  favoritesCount,
+  favoriteTo,
   className,
   delay = 0,
 }: PostProps) => {
+  const [isFavorite, setIsfavorite] = useState(favoriteTo.some(({ $id }: any) => $id === userID)) 
+
   return (
     <motion.div
       className={`relative flex flex-grow flex-col items-start justify-start overflow-hidden rounded-md bg-gray-300/50 shadow-md shadow-gray-400/60 ${className}`}
@@ -34,7 +36,7 @@ export const Post = ({
 
       {/* Created At and Add to Favorites */}
       <div className="mb-2 flex w-full items-end justify-between px-2">
-        <FavoriteButton postID={id} />
+        <FavoriteButton postID={id} isFavorite={isFavorite} setIsfavorite={setIsfavorite} userID={userID} />
         <p className="font-nunito text-xs font-light text-gray-400 sm:text-sm">
           {createdAt}
         </p>
@@ -43,12 +45,13 @@ export const Post = ({
   );
 };
 
-const FavoriteButton = ({ postID }: FavoriteButtonProps) => {
-  const { user, loading: userLoading } = useAuthenticatedUser();
-  const userID = useMemo(() => user?.$id, [user]);
-  const [isFavorite, setIsFavorite] = useState(false);
+const FavoriteButton = ({
+  postID,
+  userID,
+  isFavorite,
+  setIsfavorite
+}: FavoriteButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-
 
   const handleClick = async () => {
     if (!userID || !postID) return;
@@ -56,7 +59,7 @@ const FavoriteButton = ({ postID }: FavoriteButtonProps) => {
     try {
       setIsLoading(true);
       await addFavoritePost({ userID, postID });
-      setIsFavorite(!isFavorite);
+      setIsfavorite(!isFavorite);
     } catch (error) {
       console.error("Failed to update favorite status:", error);
     } finally {
@@ -80,15 +83,18 @@ const FavoriteButton = ({ postID }: FavoriteButtonProps) => {
 
 interface PostProps {
   id: string;
+  userID: string;
   title: string;
   content: string;
   createdAt: string;
-  favoritesCount: number;
+  favoriteTo: Array<object>;
   className?: string;
   delay?: number;
 }
 
-
 interface FavoriteButtonProps {
   postID: string;
+  isFavorite: boolean;
+  userID: string;
+  setIsfavorite: (isFavorite: boolean) => void;
 }
