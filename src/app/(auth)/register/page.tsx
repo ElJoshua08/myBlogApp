@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { register } from "@/services/authService";
 import { registerSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,11 +17,13 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
   const router = useRouter();
-  const user = useAuthenticatedUser();
+  const { user, loading } = useAuthenticatedUser();
 
-  if (user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,11 +52,17 @@ const RegisterPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <FaSpinner className="animate-spin text-4xl text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <main className="flex flex-col items-center justify-center gap-5">
-      <h1 className="header">
-        Register
-      </h1>
+      <h1 className="header">Register</h1>
 
       <form
         className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"

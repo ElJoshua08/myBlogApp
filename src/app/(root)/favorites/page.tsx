@@ -1,10 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Masonry from "react-masonry-css";
-import { getPosts } from "@/services/postService";
+import { getUserFavoritePosts } from "@/services/postService";
 import { parseToReadableDate } from "@/lib/utils";
 import { Post } from "@/components/Post";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { useRouter } from "next/navigation";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -13,20 +16,36 @@ const breakpointColumnsObj = {
 };
 
 export default function Favorites() {
+  const { user, loading } = useAuthenticatedUser();
+  const router = useRouter();
   const [posts, setPosts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Memoize the userID to avoid unnecessary re-renders
+  const userID = useMemo(() => user?.$id, [user]);
 
   useEffect(() => {
+    if (loading) return;
+
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
     const fetchPosts = async () => {
-      setIsLoading(true);
-      const fetchedPosts = await getPosts();
-      setPosts(fetchedPosts);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const fetchedPosts = await getUserFavoritePosts({ userID });
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchPosts();
-  }, []);
+  }, [userID, loading, user, router]);
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
@@ -57,10 +76,11 @@ export default function Favorites() {
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {posts.map(
+            {posts?.map(
               ({ postName, postContent, $createdAt, id }: PostProps) => (
                 <div key={id} className="break-inside-avoid">
                   <Post
+                    id={id}
                     title={postName}
                     content={postContent}
                     createdAt={parseToReadableDate(new Date($createdAt))}
@@ -82,4 +102,3 @@ interface PostProps {
   $createdAt: string;
   id: string;
 }
-

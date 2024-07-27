@@ -1,16 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "@/services/authService";
-import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function LogoutPage() {
   const router = useRouter();
-  const user = useAuthenticatedUser();
 
   setTimeout(() => {
     logout();
-    router.push("/");
+    router.push("/");k
   }, 1000);
   
   return (

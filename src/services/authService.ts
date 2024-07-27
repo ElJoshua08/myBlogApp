@@ -34,8 +34,8 @@ export const register = async ({ name, email, password }: RegisterProps) => {
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
       user.$id,
       {
-        userName: name,
-        userEmail:email,
+        name,
+        email,
       },
       [],
     );
@@ -66,7 +66,7 @@ export const logout = async () => {
   }
 };
 
-export async function getLoggedInUser() {
+export const getLoggedInUser = async () => {
   try {
     const { account } = await createSessionClient();
     const user = await account.get();

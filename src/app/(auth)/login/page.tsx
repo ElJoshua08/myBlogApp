@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { login } from "@/services/authService";
 import { loginSchema } from "@/schemas/authSchema";
@@ -7,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-
 import { FaSpinner } from "react-icons/fa";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
@@ -20,11 +20,13 @@ const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const user = useAuthenticatedUser();
+  const { user, loading } = useAuthenticatedUser();
 
-  if (user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   const {
     register,
@@ -40,7 +42,6 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       await login({ email, password });
-
       router.push("/");
     } catch (err) {
       setError("Invalid email or password");
@@ -48,11 +49,17 @@ const LoginPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <FaSpinner className="animate-spin text-4xl text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <main className="flex flex-col items-center justify-center gap-5">
-      <h1 className="header">
-        Login
-      </h1>
+      <h1 className="header">Login</h1>
 
       <form
         className="flex w-72 flex-col gap-3 rounded-md bg-slate-200/30 px-6 py-5 backdrop-blur-md"
@@ -111,7 +118,7 @@ const LoginPage = () => {
         </ActionButton>
       </form>
       <p className="flex items-center gap-2 text-left text-sm text-gray-600">
-        Dont have an account?{" "}
+        Don&apost have an account?{" "}
         <Link
           href="/register"
           className="text-gray-400 transition-colors hover:text-blue-500"
@@ -122,12 +129,5 @@ const LoginPage = () => {
     </main>
   );
 };
-
-interface InputProps {
-  label: string;
-  type: string;
-  placeholder: string;
-  className: string;
-}
 
 export default LoginPage;

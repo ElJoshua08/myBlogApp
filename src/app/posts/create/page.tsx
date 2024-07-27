@@ -6,7 +6,7 @@ import { createPost } from "@/services/postService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import Link from "next/link";
@@ -14,15 +14,18 @@ import Link from "next/link";
 type CreatePostFormInputs = z.infer<typeof postSchema>;
 
 export default function CreatePostPage() {
-  const user = useAuthenticatedUser();
+  const { user, loading } = useAuthenticatedUser();
   const router = useRouter();
 
+  const userID = useMemo(() => user?.$id, [user]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!user) {
-    console.log("no user detected")
-  }
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
 
   const {
     register: formCreatePost,
@@ -32,12 +35,8 @@ export default function CreatePostPage() {
     resolver: zodResolver(postSchema),
   });
 
-  const onSubmit = async (data: CreatePostFormInputs) => {
-    const { title, content } = data;
-
+  const onSubmit = async ({ title, content }: CreatePostFormInputs) => {
     try {
-      const userID = user.$id;
-      console.log("userID", userID);
       setIsLoading(true);
       await createPost({ title, content, userID });
       router.push("/");
@@ -48,10 +47,13 @@ export default function CreatePostPage() {
     }
   };
 
-  return user ? (
+  return loading ? (
+    <div className="flex h-full w-full items-center justify-center">
+      <FaSpinner className="animate-spin text-4xl text-blue-500" />
+    </div>
+  ) : user ? (
     <div className="flex w-full flex-grow flex-col items-center justify-center">
       <h1 className="header mb-5">Create Post</h1>
-
       <form
         className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"
         onSubmit={handleSubmit(onSubmit)}
@@ -86,13 +88,13 @@ export default function CreatePostPage() {
 
       <Link
         href="/"
-        className="mt-5 items-start font-nunito text-sm text-gray-400 hover:text-blue-500 text-left"
+        className="mt-5 font-nunito text-sm text-gray-400 hover:text-blue-500"
       >
         Return to home
       </Link>
     </div>
   ) : (
-    <div>
+    <div className="flex h-full w-full flex-col items-center justify-center">
       <h1>Please login before creating a post</h1>
       <ActionButton onClick={() => router.push("/login")} className="mt-5">
         Login
