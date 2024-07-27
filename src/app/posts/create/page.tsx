@@ -38,7 +38,6 @@ export default function CreatePostPage() {
     try {
       const userID = user.$id;
       console.log("userID", userID);
-
       setIsLoading(true);
       await createPost({ title, content, userID });
       router.push("/");

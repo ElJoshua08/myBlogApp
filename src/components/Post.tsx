@@ -10,8 +10,8 @@ export const Post = ({
   className,
 }: PostProps) => {
   return (
-    <div className="relative flex flex-col items-start justify-start gap-1 overflow-hidden rounded-md bg-gray-300/50 shadow-md shadow-gray-400/60 flex-grow">
-      <div className="flex flex-grow flex-col items-start justify-start gap-1 p-4">
+    <div className="relative flex flex-col items-start justify-start overflow-hidden rounded-md bg-gray-300/50 shadow-md shadow-gray-400/60 flex-grow">
+      <div className="flex flex-grow flex-col items-start justify-start p-4">
         {/* Post Title */}
         <h3 className="font-roboto text-2xl font-semibold">{title}</h3>
         {/* Post Content */}
