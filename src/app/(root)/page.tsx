@@ -8,6 +8,14 @@ import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
 import { Post } from "@/components/Post";
 import { parseToReadableDate } from "@/lib/utils";
+import Masonry from "react-masonry-css";
+
+const breakpointColumnsObj = {
+  default: 3,
+  1100: 2,
+  700: 1,
+};
+
 
 export default function Home() {
   const router = useRouter();
@@ -50,29 +58,29 @@ export default function Home() {
         </span>
       </h1>
       {/* Posts */}
+      {/* TODO: Re layout this shit  */}
       <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
         {isLoading ? (
           <div className="flex w-full items-center justify-center">
             <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
           </div>
         ) : (
-          <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {posts.map(
-              ({ postName, postContent, $createdAt, id }: PostProps) => (
-                <div
-                  key={id}
-                  className="break-inside-avoid"
-                >
-                  <Post
-                    title={postName}
-                    content={postContent}
-                    createdAt={parseToReadableDate(new Date($createdAt))}
-                    favoritesCount={0}
-                  />
-                </div>
-              ),
-            )}
-          </div>
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
+            {posts.map(({ postName, postContent, $createdAt, id }: PostProps) => (
+              <div key={id} className="break-inside-avoid">
+                <Post
+                  title={postName}
+                  content={postContent}
+                  createdAt={parseToReadableDate(new Date($createdAt))}
+                  favoritesCount={0}
+                />
+              </div>
+            ))}
+          </Masonry>
         )}
       </div>
 

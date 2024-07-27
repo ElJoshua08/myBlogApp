@@ -21,7 +21,7 @@ export default function CreatePostPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   if (!user) {
-    console.log("redirecting");
+    console.log("no user detected")
   }
 
   const {
