@@ -6,12 +6,14 @@ import { getPosts } from "@/services/postService";
 import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
+import { Post } from "@/components/Post";
 
 export default function Home() {
   const router = useRouter();
   const user = useAuthenticatedUser();
 
   const [posts, setPosts] = useState<any>([]);
+  console.log("posts", posts);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -48,17 +50,14 @@ export default function Home() {
         </span>
       </h1>
       {/* Posts */}
-      <div className="mt-10 flex flex-grow flex-col flex-wrap gap-4">
+      <div className="mt-10 flex flex-grow flex-row flex-wrap gap-8 px-4">
         {isLoading ? (
           <div className="flex items-center justify-center">
             <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
           </div>
         ) : (
-          posts.map(({ postName, postContent, postDate, id }: PostProps) => (
-            <div key={id} className="flex flex-col gap-4 bg-red-500 p-4">
-              <h1>{postName}</h1>
-              <p>{postContent}</p>
-            </div>
+          posts.map(({ postName, postContent, $createdAt, id }: PostProps) => (
+            <Post key={id} title={postName} content={postContent} createdAt={$createdAt} favoritesCount={0} />
           ))
         )}
       </div>
@@ -74,6 +73,6 @@ export default function Home() {
 interface PostProps {
   postName: string;
   postContent: string;
-  postDate: string;
+  $createdAt: string;
   id: string;
 }

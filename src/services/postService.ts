@@ -12,6 +12,8 @@ export const getPosts = async () => {
       [],
     );
 
+    console.log("posts", posts);
+
     return posts?.documents;
   } catch (error) {
     console.error("Error during fetching posts:", error);
