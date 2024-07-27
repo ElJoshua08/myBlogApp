@@ -10,15 +10,16 @@ export const Post = ({
   favoritesCount,
 }: PostProps) => {
   return (
-    <div className="relative flex max-w-80 flex-col items-start justify-start gap-1 rounded-md bg-gray-300/50 p-4 shadow-lg shadow-gray-500/60 overflow-hidden">
-      {/* Post Title */}
-      <h3 className="font-roboto text-2xl font-semibold">{title}</h3>
-
-      {/* Post Content */}
-      <p className="mb-4 break-words font-nunito text-gray-500">{content}</p>
+    <div className="relative flex max-w-96 h-full flex-col items-start justify-start gap-1 overflow-hidden rounded-md bg-gray-300/50 shadow-md shadow-gray-400/60 flex-grow">
+      <div className="flex flex-grow flex-col items-start justify-start gap-1 p-4">
+        {/* Post Title */}
+        <h3 className="font-roboto text-2xl font-semibold">{title}</h3>
+        {/* Post Content */}
+        <p className="mb-4 break-words font-nunito text-gray-500">{content}</p>
+      </div>
 
       {/* Created At and Add to Favorites */}
-      <div className="absolute pb-4 bottom-0 flex items-end justify-between">
+      <div className="px-2 mb-2 flex w-full items-end justify-between">
         <FavoriteButton />
         <p className="font-nunito font-light text-gray-400">{createdAt}</p>
       </div>

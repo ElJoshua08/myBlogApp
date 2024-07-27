@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
 import { Post } from "@/components/Post";
+import { parseToReadableDate } from "@/lib/utils";
 
 export default function Home() {
   const router = useRouter();
@@ -27,9 +28,8 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-
   return (
-    <main className="relative flex-grow flex flex-col items-center justify-start pb-5">
+    <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1
         className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-800`}
@@ -50,20 +50,37 @@ export default function Home() {
         </span>
       </h1>
       {/* Posts */}
-      <div className="mt-10 flex flex-grow flex-row flex-wrap gap-8 px-4">
+      <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
         {isLoading ? (
-          <div className="flex items-center justify-center">
+          <div className="flex w-full items-center justify-center">
             <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
           </div>
         ) : (
-          posts.map(({ postName, postContent, $createdAt, id }: PostProps) => (
-            <Post key={id} title={postName} content={postContent} createdAt={$createdAt} favoritesCount={0} />
-          ))
+          <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {posts.map(
+              ({ postName, postContent, $createdAt, id }: PostProps) => (
+                <div
+                  key={id}
+                  className="break-inside-avoid"
+                >
+                  <Post
+                    title={postName}
+                    content={postContent}
+                    createdAt={parseToReadableDate(new Date($createdAt))}
+                    favoritesCount={0}
+                  />
+                </div>
+              ),
+            )}
+          </div>
         )}
       </div>
 
-      {/* Create new post */} 
-      <ActionButton onClick={() => router.push("/posts/create")} className="absolute !bg-accent hover:!shadow-accent/70 bottom-0 right-0 mb-5 mr-5">
+      {/* Create new post */}
+      <ActionButton
+        onClick={() => router.push("/posts/create")}
+        className="absolute bottom-0 right-0 mb-5 mr-5 !bg-accent hover:!shadow-accent/70"
+      >
         Create Post <FaPlus className="inline-block" />
       </ActionButton>
     </main>
