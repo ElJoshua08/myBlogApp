@@ -1,5 +1,5 @@
 "use client";
-import {  useState } from "react";
+import { useState } from "react";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { login } from "@/services/authService";
 import { loginSchema } from "@/schemas/authSchema";
@@ -22,9 +22,8 @@ const LoginPage = () => {
   const user = useAuthenticatedUser();
 
   if (user) {
-    router.push("/"); 
+    router.push("/");
   }
-
 
   const {
     register,
@@ -35,9 +34,11 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
+    const { email, password } = data;
+
     try {
       setIsLoading(true);
-      await login(data.email, data.password);
+      await login({ email, password });
 
       router.push("/");
     } catch (err) {

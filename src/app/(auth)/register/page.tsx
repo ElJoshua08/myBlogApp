@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { getLoggedInUser, register as registerService } from "@/services/authService";
+import { register } from "@/services/authService";
 import { registerSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,6 @@ const RegisterPage = () => {
     router.push("/");
   }
 
-
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +38,7 @@ const RegisterPage = () => {
 
     try {
       setIsLoading(true);
-      await registerService(name, email, password);
+      await register({ name, email, password });
 
       router.push("/");
     } catch (err) {

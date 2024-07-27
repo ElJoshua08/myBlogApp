@@ -40,7 +40,7 @@ export const Header = () => {
           alt="logo"
           className="size-16"
         />
-        <h1 className="text-accent font-pacifico text-2xl font-semibold tracking-wide">
+        <h1 className="text-accent font-pacifico text-2xl font-semibold tracking-wide hidden sm:flex">
           My blog
         </h1>
       </div>
@@ -75,7 +75,7 @@ const NavItem = ({ item }: NavItemProps) => {
     <li className="flex items-center">
       <Link
         href={item.href}
-        className={`flex items-center gap-2 rounded-md p-2 sm:px-2 sm:py-1 text-2xl sm:text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
+        className={`flex items-center gap-2 rounded-md p-2 sm:px-2 sm:py-1 text-xl sm:text-lg transition-all duration-150 ${isActive ? "bg-blue-300 text-white" : "text-slate-500 hover:bg-blue-200/60"}`}
       >
         {item.icon}
         <span className="hidden sm:flex">{item.name}</span>

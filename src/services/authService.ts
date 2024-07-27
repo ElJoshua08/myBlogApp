@@ -24,10 +24,21 @@ export const login = async ({ email, password }: LoginProps) => {
 
 export const register = async ({ name, email, password }: RegisterProps) => {
   try {
-    const { account } = await createAdminClient();
+    const { account, database } = await createAdminClient();
 
-    await account.create(ID.unique(), email, password, name);
+    const user = await account.create(ID.unique(), email, password, name);
     const session = await account.createEmailPasswordSession(email, password);
+
+    await database.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      user.$id,
+      {
+        userName: name,
+        userEmail:email,
+      },
+      [],
+    );
 
     cookies().set("authData-session", session.secret, {
       path: "/",
@@ -35,7 +46,6 @@ export const register = async ({ name, email, password }: RegisterProps) => {
       sameSite: "strict",
       secure: true,
     });
-
   } catch (error) {
     console.error("Error during registration:", error);
     throw error;

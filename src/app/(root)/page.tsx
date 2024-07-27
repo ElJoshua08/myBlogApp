@@ -22,7 +22,6 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  console.log(posts);
 
   return (
     <main className="relative flex-grow flex flex-col items-center justify-start pb-5">
