@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Post } from "./Post";
 import Masonry from "react-masonry-css";
 import { parseToReadableDate } from "@/lib/utils";
+import { getPosts, getUserFavoritePosts } from "@/services/postService";
+import { PostSkeleton } from "./PostSkeleton";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -9,19 +11,45 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
+export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export const PostsGrid = ({ posts, isLoading, userID, isFavorites=false }: PostsGridProps) => {
+  useEffect(() => {
+    console.log("fetching posts", userID);
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedPosts = isFavorites
+          ? await getUserFavoritePosts({ userID })
+          : await getPosts();
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [userID, isFavorites]);
 
   return (
     <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
       {isLoading ? (
-        <div className="flex w-full items-center justify-center">
-          <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
-        </div>
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {Array.from({ length: 10 }).map((_, index) => (
+            <PostSkeleton key={index} />
+          ))}
+        </Masonry>
       ) : (
         <Masonry
           breakpointCols={breakpointColumnsObj}
-          className="my-masonry-grid flex flex-grow"
+          className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
           {posts.map(
@@ -41,7 +69,7 @@ export const PostsGrid = ({ posts, isLoading, userID, isFavorites=false }: Posts
                 id={$id}
                 userID={userID}
                 title={title}
-                favoriteTo={isFavorites ?  [{ $id: userID }] : favoriteTo}
+                favoriteTo={isFavorites ? [{ $id: userID }] : favoriteTo}
                 createdBy={createdBy}
                 content={content}
                 createdAt={parseToReadableDate(new Date($createdAt))}
@@ -57,8 +85,6 @@ export const PostsGrid = ({ posts, isLoading, userID, isFavorites=false }: Posts
 };
 
 interface PostsGridProps {
-  posts: Array<PostProps>;
-  isLoading: boolean;
   userID: string;
   isFavorites?: boolean;
 }
@@ -68,6 +94,6 @@ interface PostProps {
   $createdAt: string;
   title: string;
   content: string;
-  favoriteTo: Array<object>;
-  createdBy: object;
+  favoriteTo: Array<{ $id: string }>;
+  createdBy: { name: string };
 }

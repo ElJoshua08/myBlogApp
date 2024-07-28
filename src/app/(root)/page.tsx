@@ -1,8 +1,7 @@
 "use client";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { getPosts } from "@/services/postService";
+import { useEffect, useMemo } from "react";
 import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
@@ -13,35 +12,18 @@ export default function Home() {
   const { user, loading: userLoading } = useAuthenticatedUser();
   const userID = useMemo(() => user?.$id, [user]);
 
-  const [posts, setPosts] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (userLoading) return;
 
     if (!user) {
-      setIsLoading(false);
       router.push("/login");
       return;
     }
-
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const fetchedPosts = await getPosts();
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
   }, [user, userLoading, router]);
 
-
-  return (
+  return userLoading ? (
+    <div className="flex w-full flex-grow items-center justify-center gap-3"> Loading </div>
+  ) : (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1
@@ -62,8 +44,8 @@ export default function Home() {
         </span>
       </h1>
       {/* Posts */}
-      <PostsGrid posts={posts} userID={userID} isLoading={isLoading} />
-     
+      {userID && <PostsGrid userID={userID} />}
+
       {/* Create new post */}
       {user && (
         <ActionButton
@@ -77,4 +59,3 @@ export default function Home() {
     </main>
   );
 }
-

@@ -1,40 +1,24 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
-import { getUserFavoritePosts } from "@/services/postService";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { PostsGrid } from "@/components/PostsGrid";
+import { useRouter } from "next/navigation";
 
 export default function Favorites() {
+  const router = useRouter();
   const { user, loading: userLoading } = useAuthenticatedUser();
   const userID = useMemo(() => user?.$id, [user]);
-
-  const [posts, setPosts] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (userLoading) return;
 
     if (!user) {
-      setIsLoading(false);
+      router.push("/login");
       return;
     }
-
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const fetchedPosts = await getUserFavoritePosts({ userID });
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, [user, userLoading, userID]);
+  }, [user, userLoading, router]);
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
@@ -55,7 +39,7 @@ export default function Favorites() {
       </h1>
 
       
-      <PostsGrid posts={posts} userID={userID} isLoading={isLoading} isFavorites={true} />
+      <PostsGrid userID={userID}  isFavorites={true} />
     </main>
   );
 }
