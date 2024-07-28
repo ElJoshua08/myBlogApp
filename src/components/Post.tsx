@@ -1,5 +1,5 @@
 "use client";
-import { addFavoritePost } from "@/services/postService";
+import { addFavoritePost, deleteFavoritePost } from "@/services/postService";
 import { useMemo, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -10,11 +10,15 @@ export const Post = ({
   title,
   content,
   createdAt,
+  createdBy,
   favoriteTo,
   className,
   delay = 0,
 }: PostProps) => {
-  const [isFavorite, setIsfavorite] = useState(favoriteTo.some(({ $id }: any) => $id === userID)) 
+  const [isFavorite, setIsfavorite] = useState(
+    favoriteTo.some(({ $id }: any) => $id === userID),
+  );
+  const userName = createdBy.name;
 
   return (
     <motion.div
@@ -24,6 +28,18 @@ export const Post = ({
       transition={{ duration: 0.5, delay }}
     >
       <div className="flex flex-grow flex-col items-start justify-start p-4">
+        {/* Avartar and Username */}
+        <div className="mb-2 flex items-center gap-2">
+          <div className="flex size-9 items-center justify-center rounded-full border border-slate-400 bg-slate-300">
+            {/* TODO: get username initials */}
+            <p className="font-nunito text-2xl font-bold text-slate-700">
+              {userName.slice(0, 1)}
+            </p>
+          </div>
+          <p className="font-nunito text-base font-semibold leading-tight text-slate-700">
+            {userName}
+          </p>
+        </div>
         {/* Post Title */}
         <h3 className="mb-2 font-roboto text-xl font-semibold leading-tight sm:text-2xl">
           {title}
@@ -36,7 +52,12 @@ export const Post = ({
 
       {/* Created At and Add to Favorites */}
       <div className="mb-2 flex w-full items-end justify-between px-2">
-        <FavoriteButton postID={id} isFavorite={isFavorite} setIsfavorite={setIsfavorite} userID={userID} />
+        <FavoriteButton
+          postID={id}
+          isFavorite={isFavorite}
+          setIsfavorite={setIsfavorite}
+          userID={userID}
+        />
         <p className="font-nunito text-xs font-light text-gray-400 sm:text-sm">
           {createdAt}
         </p>
@@ -49,21 +70,33 @@ const FavoriteButton = ({
   postID,
   userID,
   isFavorite,
-  setIsfavorite
+  setIsfavorite,
 }: FavoriteButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
     if (!userID || !postID) return;
 
-    try {
-      setIsLoading(true);
-      await addFavoritePost({ userID, postID });
-      setIsfavorite(!isFavorite);
-    } catch (error) {
-      console.error("Failed to update favorite status:", error);
-    } finally {
-      setIsLoading(false);
+    if (isFavorite) {
+      try {
+        setIsLoading(true);
+        await deleteFavoritePost({ userID, postID });
+        setIsfavorite(false);
+      } catch (error) {
+        console.error("Failed to delete favorite status:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        setIsLoading(true);
+        await addFavoritePost({ userID, postID });
+        setIsfavorite(true);
+      } catch (error) {
+        console.error("Failed to update favorite status:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -90,6 +123,7 @@ interface PostProps {
   favoriteTo: Array<object>;
   className?: string;
   delay?: number;
+  createdBy: any;
 }
 
 interface FavoriteButtonProps {

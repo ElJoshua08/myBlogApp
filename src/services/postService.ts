@@ -31,9 +31,6 @@ export const getUserFavoritePosts = async ({
 
     const favoritePosts = user.documents[0]?.favoritePosts;
 
-    console.log("user is:", user)
-    console.log("favorite posts are: ", favoritePosts);
-
     return favoritePosts;
   } catch (error) {
     console.error("Error during fetching posts:", error);
@@ -59,6 +56,8 @@ export const addFavoritePost = async ({
       favoritePosts: [...favoritePosts, postID],
     };
 
+    console.log("updated user is:", updatedUser);
+
     await database.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
@@ -67,6 +66,38 @@ export const addFavoritePost = async ({
     );
   } catch (error) {
     console.error("Error during adding favorite post:", error);
+    throw error;
+  }
+};
+
+export const deleteFavoritePost = async ({
+  userID,
+  postID,
+}: DeleteFavoritePostProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await database.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      userID,
+    );
+
+    // Exclude system attributes and only include the fields you want to update
+    const { favoritePosts } = user;
+    const updatedUser = {
+      favoritePosts: favoritePosts.filter(({ $id }: any) => $id !== postID),
+    };
+
+    console.log("updated user is:", updatedUser);
+
+    await database.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      userID,
+      updatedUser,
+    );
+  } catch (error) {
+    console.error("Error during deleting favorite post:", error);
     throw error;
   }
 };
@@ -109,4 +140,9 @@ interface AddFavoritePostProps {
 
 interface GetUserFavoritePostsProps {
   userID: string;
+}
+
+interface DeleteFavoritePostProps {
+  userID: string;
+  postID: string;
 }

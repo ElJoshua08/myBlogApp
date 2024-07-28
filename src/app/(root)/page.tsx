@@ -6,15 +6,7 @@ import { getPosts } from "@/services/postService";
 import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
-import { Post } from "@/components/Post";
-import { parseToReadableDate } from "@/lib/utils";
-import Masonry from "react-masonry-css";
-
-const breakpointColumnsObj = {
-  default: 3,
-  1000: 2,
-  500: 1,
-};
+import { PostsGrid } from "@/components/PostsGrid";
 
 export default function Home() {
   const router = useRouter();
@@ -46,10 +38,8 @@ export default function Home() {
     };
 
     fetchPosts();
-  }, [user, userLoading]);
+  }, [user, userLoading, router]);
 
-  
-  console.log("posts are:", posts);
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
@@ -72,38 +62,8 @@ export default function Home() {
         </span>
       </h1>
       {/* Posts */}
-      <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
-        {isLoading ? (
-          <div className="flex w-full items-center justify-center">
-            <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-slate-200"></div>
-          </div>
-        ) : (
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="my-masonry-grid flex flex-grow"
-            columnClassName="my-masonry-grid_column"
-          >
-            {posts.map(
-              (
-                { title, content, $createdAt, favoriteTo, $id }: PostProps,
-                index: number,
-              ) => (
-                <Post
-                  key={$id}
-                  id={$id}
-                  userID={userID}
-                  title={title}
-                  favoriteTo={favoriteTo}
-                  content={content}
-                  createdAt={parseToReadableDate(new Date($createdAt))}
-                  className="break-inside-avoid"
-                  delay={index * 0.1}
-                />
-              ),
-            )}
-          </Masonry>
-        )}
-      </div>
+      <PostsGrid posts={posts} userID={userID} isLoading={isLoading} />
+     
       {/* Create new post */}
       {user && (
         <ActionButton
@@ -118,10 +78,3 @@ export default function Home() {
   );
 }
 
-interface PostProps {
-  $id: string;
-  $createdAt: string;
-  title: string;
-  content: string;
-  favoriteTo: Array<object>;
-}
