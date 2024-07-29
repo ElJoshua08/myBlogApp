@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { FaHome, FaStar, FaUser } from "react-icons/fa";
+import { NavItemProps } from "@/types/interfaces";
 
 export const Header = () => {
   const { user, loading } = useAuthenticatedUser();
@@ -90,11 +91,3 @@ const NavItem = ({ item }: NavItemProps) => {
     </li>
   );
 };
-
-interface NavItemProps {
-  item: {
-    name: string;
-    href: string;
-    icon: React.ReactNode;
-  };
-}

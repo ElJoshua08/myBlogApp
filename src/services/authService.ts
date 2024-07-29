@@ -4,6 +4,7 @@ import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
+import { LoginProps, RegisterProps } from "@/types/interfaces";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
@@ -74,15 +75,4 @@ export const getLoggedInUser = async () => {
   } catch (error) {
     return null;
   }
-}
-
-interface LoginProps {
-  email: string;
-  password: string;
-}
-
-interface RegisterProps {
-  name: string;
-  email: string;
-  password: string;
 }

@@ -2,7 +2,6 @@
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { getPosts } from "@/services/postService";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 

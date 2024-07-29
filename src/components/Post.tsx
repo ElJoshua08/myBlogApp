@@ -1,15 +1,16 @@
 "use client";
 import { addFavoritePost, deleteFavoritePost } from "@/services/postService";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { FavoriteButtonProps, PostProps } from "@/types/interfaces";
 
 export const Post = ({
-  id,
+  $id,
+  $createdAt,
   userID,
   title,
   content,
-  createdAt,
   createdBy,
   favoriteTo,
   className,
@@ -53,13 +54,13 @@ export const Post = ({
       {/* Created At and Add to Favorites */}
       <div className="mb-2 flex w-full items-end justify-between px-2">
         <FavoriteButton
-          postID={id}
+          postID={$id}
           isFavorite={isFavorite}
           setIsfavorite={setIsfavorite}
           userID={userID}
         />
         <p className="font-nunito text-xs font-light text-gray-400 sm:text-sm">
-          {createdAt}
+          {$createdAt}
         </p>
       </div>
     </motion.div>
@@ -113,22 +114,3 @@ const FavoriteButton = ({
     </button>
   );
 };
-
-interface PostProps {
-  id: string;
-  userID: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  favoriteTo: Array<object>;
-  className?: string;
-  delay?: number;
-  createdBy: any;
-}
-
-interface FavoriteButtonProps {
-  postID: string;
-  isFavorite: boolean;
-  userID: string;
-  setIsfavorite: (isFavorite: boolean) => void;
-}

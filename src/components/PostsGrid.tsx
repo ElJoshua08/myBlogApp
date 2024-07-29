@@ -4,6 +4,7 @@ import Masonry from "react-masonry-css";
 import { parseToReadableDate } from "@/lib/utils";
 import { getPosts, getUserFavoritePosts } from "@/services/postService";
 import { PostSkeleton } from "./PostSkeleton";
+import { PostProps, PostsGridProps } from "@/types/interfaces";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -66,13 +67,13 @@ export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
             ) => (
               <Post
                 key={$id}
-                id={$id}
+                $id={$id}
+                $createdAt={parseToReadableDate(new Date($createdAt))}
                 userID={userID}
                 title={title}
                 favoriteTo={isFavorites ? [{ $id: userID }] : favoriteTo}
                 createdBy={createdBy}
                 content={content}
-                createdAt={parseToReadableDate(new Date($createdAt))}
                 className="break-inside-avoid"
                 delay={index * 0.1}
               />
@@ -83,17 +84,3 @@ export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
     </div>
   );
 };
-
-interface PostsGridProps {
-  userID: string;
-  isFavorites?: boolean;
-}
-
-interface PostProps {
-  $id: string;
-  $createdAt: string;
-  title: string;
-  content: string;
-  favoriteTo: Array<{ $id: string }>;
-  createdBy: { name: string };
-}

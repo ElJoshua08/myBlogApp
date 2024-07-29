@@ -1,5 +1,6 @@
 "use server";
 import { createAdminClient } from "@/lib/appwrite";
+import { AddFavoritePostProps, CreatePostProps, DeleteFavoritePostProps, GetUserFavoritePostsProps } from "@/types/interfaces";
 import { ID, Query } from "node-appwrite";
 
 export const getPosts = async () => {
@@ -127,22 +128,3 @@ export const createPost = async ({
   }
 };
 
-interface CreatePostProps {
-  title: string;
-  content: string;
-  userID: string;
-}
-
-interface AddFavoritePostProps {
-  userID: string;
-  postID: string;
-}
-
-interface GetUserFavoritePostsProps {
-  userID: string;
-}
-
-interface DeleteFavoritePostProps {
-  userID: string;
-  postID: string;
-}
