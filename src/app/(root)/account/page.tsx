@@ -7,8 +7,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   FaArrowRight,
-  FaCheck,
-  FaEdit,
   FaEye,
   FaEyeSlash,
   FaSpinner,
@@ -53,11 +51,12 @@ export default function AccountPage() {
         </h1>
 
         <PostsGrid userID={userID} type="account" limit={3} />
+        
         <Link
           href="/account/posts"
           className="relative bottom-0 right-0 mb-5 mr-5 flex items-center justify-center gap-3 text-xl text-accent"
         >
-          <span className="inline">See all posts</span>
+          <span className="inline">See all your posts</span>
           <FaArrowRight className="inline-block" />
         </Link>
       </section>

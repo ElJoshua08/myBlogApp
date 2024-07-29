@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { Post } from "./Post";
 import Masonry from "react-masonry-css";
 import { parseToReadableDate } from "@/lib/utils";
-import { getPosts, getUserFavoritePosts, getUserPosts } from "@/services/postService";
+import {
+  getPosts,
+  getUserFavoritePosts,
+  getUserPosts,
+} from "@/services/postService";
 import { PostSkeleton } from "./PostSkeleton";
 import { PostProps, PostsGridProps } from "@/types/interfaces";
 
@@ -12,7 +16,11 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
-const getPostsByType = async (type: "default" | "favorites" | "account", userID: string, limit=0) => {
+const getPostsByType = async (
+  type: "default" | "favorites" | "account",
+  userID: string,
+  limit = 0,
+) => {
   switch (type) {
     case "default":
       return await getPosts();
@@ -23,9 +31,13 @@ const getPostsByType = async (type: "default" | "favorites" | "account", userID:
     default:
       return await getPosts();
   }
-}
+};
 
-export const PostsGrid = ({ userID, type = "default", limit=0 }: PostsGridProps) => {
+export const PostsGrid = ({
+  userID,
+  type = "default",
+  limit = 0,
+}: PostsGridProps) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,7 +57,6 @@ export const PostsGrid = ({ userID, type = "default", limit=0 }: PostsGridProps)
     fetchPosts();
   }, [userID, type, limit]);
 
-
   return (
     <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
       {isLoading ? (
@@ -55,7 +66,7 @@ export const PostsGrid = ({ userID, type = "default", limit=0 }: PostsGridProps)
           columnClassName="my-masonry-grid_column"
         >
           {Array.from({ length: 10 }).map((_, index) => (
-            <PostSkeleton key={index} />
+            <PostSkeleton key={index} delay={index * 0.3 * Math.random()} />
           ))}
         </Masonry>
       ) : (
@@ -82,11 +93,13 @@ export const PostsGrid = ({ userID, type = "default", limit=0 }: PostsGridProps)
                 $createdAt={parseToReadableDate(new Date($createdAt))}
                 userID={userID}
                 title={title}
-                favoriteTo={type === "favorites" ? [{ $id: userID }] : favoriteTo}
+                favoriteTo={
+                  type === "favorites" ? [{ $id: userID }] : favoriteTo
+                }
                 createdBy={createdBy}
                 content={content}
                 className="break-inside-avoid"
-                delay={index * 0.1}
+                delay={index * 0.3 * Math.random()}
               />
             ),
           )}

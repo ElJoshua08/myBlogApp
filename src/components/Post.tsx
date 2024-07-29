@@ -19,7 +19,7 @@ export const Post = ({
   const [isFavorite, setIsfavorite] = useState(
     favoriteTo.some(({ $id }: any) => $id === userID),
   );
-  const userName = createdBy.name;
+  const userName = createdBy?.name || "Anonymous";
 
   return (
     <motion.div

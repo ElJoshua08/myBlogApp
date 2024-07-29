@@ -10,6 +10,10 @@ export interface PostProps {
   delay?: number;
 }
 
+export interface PostSkeletonProps {
+  delay?: number;
+}
+
 export interface GetUserPostsProps {
   userID: string;
   limit?: number;
