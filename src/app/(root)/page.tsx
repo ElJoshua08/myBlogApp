@@ -30,7 +30,7 @@ export default function Home() {
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1 className={`page-title`}>
-        Welcome back
+        Welcome back{" "}
         <span className="page-title-accent">
           <Image
             src={"/LineName.svg"}

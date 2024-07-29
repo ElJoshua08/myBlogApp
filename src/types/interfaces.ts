@@ -12,6 +12,7 @@ export interface PostProps {
 
 export interface GetUserPostsProps {
   userID: string;
+  limit?: number;
 }
 
 export interface FavoriteButtonProps {
@@ -22,6 +23,7 @@ export interface FavoriteButtonProps {
 }
 
 export interface PostsGridProps {
+  limit?: number;
   userID: string;
   type?: "default" | "favorites" | "account";
 }

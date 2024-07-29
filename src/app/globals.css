@@ -12,7 +12,7 @@
 }
 
 .page-title {
-  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-800
+  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-700
 }
 
 .page-title-accent {

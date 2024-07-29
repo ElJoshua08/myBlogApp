@@ -26,14 +26,17 @@ export const getPosts = async () => {
   }
 };
 
-export const getUserPosts = async ({ userID }: GetUserPostsProps) => {
+export const getUserPosts = async ({
+  userID,
+  limit = 0,
+}: GetUserPostsProps) => {
   try {
     const { database } = await createAdminClient();
 
     const posts = await database.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
-      [Query.equal("createdBy", userID)],
+      limit > 0 ? [Query.equal("createdBy", userID), Query.limit(limit)] : [Query.equal("createdBy", userID)],
     );
 
     return posts?.documents;
@@ -80,7 +83,6 @@ export const addFavoritePost = async ({
     const updatedUser = {
       favoritePosts: [...favoritePosts, postID],
     };
-
 
     await database.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,

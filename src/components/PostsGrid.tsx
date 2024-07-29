@@ -12,20 +12,20 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
-const getPostsByType = async (type: "default" | "favorites" | "account", userID: string) => {
+const getPostsByType = async (type: "default" | "favorites" | "account", userID: string, limit=0) => {
   switch (type) {
     case "default":
       return await getPosts();
     case "favorites":
       return await getUserFavoritePosts({ userID });
     case "account":
-      return await getUserPosts({ userID });
+      return await getUserPosts({ userID, limit });
     default:
       return await getPosts();
   }
 }
 
-export const PostsGrid = ({ userID, type = "default" }: PostsGridProps) => {
+export const PostsGrid = ({ userID, type = "default", limit=0 }: PostsGridProps) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,7 +33,7 @@ export const PostsGrid = ({ userID, type = "default" }: PostsGridProps) => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const fetchedPosts = await getPostsByType(type, userID);
+        const fetchedPosts = await getPostsByType(type, userID, limit);
         setPosts(fetchedPosts);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
@@ -43,7 +43,7 @@ export const PostsGrid = ({ userID, type = "default" }: PostsGridProps) => {
     };
 
     fetchPosts();
-  }, [userID, type]);
+  }, [userID, type, limit]);
 
 
   return (

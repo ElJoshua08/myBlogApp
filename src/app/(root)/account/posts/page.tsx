@@ -40,36 +40,18 @@ export default function AccountPage() {
               alt=""
               className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
             />
-            Account
+            Posts
           </span>
         </h1>
 
-        <PostsGrid userID={userID} type="account" limit={3} />
+        <PostsGrid userID={userID} type="account" limit={0} />
         <Link
-          href="/account/posts"
+          href="/account"
           className="relative bottom-0 right-0 mb-5 mr-5 flex items-center justify-center gap-3 text-xl text-accent"
         >
-          <span className="inline">See all posts</span>
+          <span className="inline">Go to your account</span>
           <FaArrowRight className="inline-block" />
         </Link>
-      </section>
-      {/* TODO: Place a fancy separator here */}
-
-      {/* Account settings */}
-      <section className="relative flex flex-col items-center justify-center gap-2 w-full">
-        <h1 className={`page-title`}>
-          Here are your {" "}
-          <span className="page-title-accent">
-            <Image
-              src={"/LineName.svg"}
-              width={0}
-              height={0}
-              alt=""
-              className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
-            />
-            Settings
-          </span>
-        </h1>
       </section>
     </main>
   );
