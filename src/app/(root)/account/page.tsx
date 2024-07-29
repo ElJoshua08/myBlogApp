@@ -11,7 +11,9 @@ import {
   FaEdit,
   FaEye,
   FaEyeSlash,
+  FaSpinner,
 } from "react-icons/fa";
+import { updatePassword, updateUsername } from "@/services/authService";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -82,10 +84,10 @@ export default function AccountPage() {
           <SettingsItem
             label="Username"
             value={user?.name}
-            onUpdate={() => {}}
+            onUpdate={updateUsername}
           />
           {/* Update password */}
-          <UpdatePasswordItem onUpdate={() => {}} />
+          <UpdatePasswordItem onUpdate={updatePassword} />
         </div>
         {/* Logout button */}
         <Link
@@ -106,20 +108,23 @@ const SettingsItem = ({
 }: {
   value: string;
   label: string;
-  onUpdate: () => void;
+  onUpdate: (value: string) => Promise<void>;
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState(value);
+  const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleCheck = () => {
-    setIsEditing(false);
-    onUpdate();
-  };
+  useEffect(() => {
+    setIsDisabled(inputValue === value);
+  }, [inputValue, value]);
 
-  const handleClick = () => {
-    setIsEditing(!isEditing);
-    inputRef.current?.focus();
+  const handleUpdate = async () => {
+    console.log("Updating...");
+    setIsLoading(true);
+    await onUpdate(inputValue);
+    setIsLoading(false);
+    setIsDisabled(true);
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,33 +138,47 @@ const SettingsItem = ({
         <input
           type="text"
           ref={inputRef}
-          className={`rounded-md border-2 border-gray-300/60 px-2 py-1 font-nunito outline-none transition-all ${isEditing ? "hover:border-blue-300 focus:border-blue-300" : "cursor-not-allowed brightness-75"}`}
+          className={`rounded-md border-2 border-gray-300/60 p-2 font-nunito outline-none transition-all`}
           value={inputValue}
           onChange={onInputChange}
-          disabled={!isEditing}
         />
-        {isEditing ? (
-          <FaCheck
-            className="cursor-pointer text-2xl text-slate-500"
-            onClick={handleCheck}
-          />
-        ) : (
-          <FaEdit
-            className="cursor-pointer text-2xl text-slate-500"
-            onClick={handleClick}
-          />
-        )}
+
+        <button
+          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all hover:shadow-accent/70 ${isLoading && "opacity-50"} ${isDisabled && "opacity-50"}`}
+          onClick={handleUpdate}
+          disabled={isLoading || isDisabled}
+        >
+          Update
+          {isLoading && <FaSpinner className="animate-spin inline-block" />}
+        </button>
       </div>
     </div>
   );
 };
 
-const UpdatePasswordItem = ({ onUpdate }: { onUpdate: () => void }) => {
+const UpdatePasswordItem = ({
+  onUpdate,
+}: {
+  onUpdate: (value: string) => Promise<void>;
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  useEffect(() => {
+    setIsDisabled(inputValue === "");
+  }, [inputValue]);
+
+  const handleUpdate = async () => {
+    console.log("Updating...");
+    setIsLoading(true);
+    await onUpdate(inputValue);
+    setIsLoading(false);
+    setIsDisabled(true);
   };
 
   return (
@@ -187,8 +206,13 @@ const UpdatePasswordItem = ({ onUpdate }: { onUpdate: () => void }) => {
           )}
         </div>
 
-        <button className="rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all hover:shadow-accent/70">
+        <button
+          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all hover:shadow-accent/70 ${isLoading && "opacity-50"} ${isDisabled && "opacity-50"}`}
+          onClick={handleUpdate}
+          disabled={isLoading || isDisabled}
+        >
           Update
+          {isLoading && <FaSpinner className="animate-spin inline-block" />}
         </button>
       </div>
     </div>
