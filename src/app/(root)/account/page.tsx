@@ -1,21 +1,39 @@
 "use client";
-
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { getPosts } from "@/services/postService";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function AccountPage() {
-  const { user, loading } = useAuthenticatedUser();
+  const { user, loading: userLoading } = useAuthenticatedUser();
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userID = useMemo(() => user?.$id, [user]);
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!userLoading && !user) {
       router.push("/login");
     }
-  }, [user, loading, router]);
 
-  if (loading) {
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedPosts = await getPosts();
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [user, userLoading, router]);
+
+  if (userLoading) {
     return (
       <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
         <h1 className="text-6xl font-semibold">Loading...</h1>
@@ -24,14 +42,20 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
-      <h1 className="flex items-center gap-5 text-6xl font-semibold">
-        This is your account page
+    <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
+      <h1 className={`page-title`}>
+        Take a look at your{" "}
+        <span className="page-title-accent">
+          <Image
+            src={"/LineName.svg"}
+            width={0}
+            height={0}
+            alt=""
+            className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
+          />
+          Account
+        </span>
       </h1>
-      <p className="text-2xl text-slate-400">{`Welcome back ${user?.name}`}</p>
-      <button className="flex items-center gap-2 rounded-md border-2 border-red-500 bg-white px-2 py-1 text-slate-500 transition-colors hover:bg-red-500 hover:text-white">
-        <Link href="/logout">Logout</Link>
-      </button>
-    </div>
+    </main>
   );
 }

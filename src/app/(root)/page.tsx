@@ -22,25 +22,24 @@ export default function Home() {
   }, [user, userLoading, router]);
 
   return userLoading ? (
-    <div className="flex w-full flex-grow items-center justify-center gap-3"> Loading </div>
+    <div className="flex w-full flex-grow items-center justify-center gap-3">
+      {" "}
+      Loading{" "}
+    </div>
   ) : (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
-      <h1
-        className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-4xl font-normal text-slate-800 sm:text-6xl`}
-      >
-        Welcome {user && "back"}{" "}
-        <span className="relative inline-flex text-primary-dark">
-          {user && (
-            <Image
-              src={"/LineName.svg"}
-              width={0}
-              height={0}
-              alt=""
-              className="absolute bottom-0 left-2 h-8 w-56 translate-y-6"
-            />
-          )}
-          {user ? user.name : "Guest"}
+      <h1 className={`page-title`}>
+        Welcome back
+        <span className="page-title-accent">
+          <Image
+            src={"/LineName.svg"}
+            width={0}
+            height={0}
+            alt=""
+            className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
+          />
+          {user && user.name}
         </span>
       </h1>
       {/* Posts */}

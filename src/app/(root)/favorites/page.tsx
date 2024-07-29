@@ -23,10 +23,10 @@ export default function Favorites() {
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       <h1
-        className={`left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-800`}
+        className={`page-title`}
       >
         Take a look at your{" "}
-        <span className="relative inline-flex text-primary-dark">
+        <span className="page-title-accent">
           <Image
             src={"/LineName.svg"}
             width={0}
@@ -39,7 +39,7 @@ export default function Favorites() {
       </h1>
 
       
-      <PostsGrid userID={userID}  isFavorites={true} />
+      <PostsGrid userID={userID} isFavorites={true} />
     </main>
   );
 }

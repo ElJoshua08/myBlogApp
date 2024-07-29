@@ -11,6 +11,14 @@
   @apply mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md;
 }
 
+.page-title {
+  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-800
+}
+
+.page-title-accent {
+ @apply relative inline-flex text-primary-dark
+}
+
 .my-masonry-grid {
   display: flex;
   margin-left: -16px; /* Spacing between columns */
