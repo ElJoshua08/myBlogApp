@@ -10,6 +10,10 @@ export interface PostProps {
   delay?: number;
 }
 
+export interface GetUserPostsProps {
+  userID: string;
+}
+
 export interface FavoriteButtonProps {
   postID: string;
   isFavorite: boolean;
@@ -19,7 +23,7 @@ export interface FavoriteButtonProps {
 
 export interface PostsGridProps {
   userID: string;
-  isFavorites?: boolean;
+  type?: "default" | "favorites" | "account";
 }
 
 export interface NavItemProps {

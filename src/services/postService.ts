@@ -1,6 +1,13 @@
 "use server";
+
+import { GetUserPostsProps } from "./../types/interfaces";
 import { createAdminClient } from "@/lib/appwrite";
-import { AddFavoritePostProps, CreatePostProps, DeleteFavoritePostProps, GetUserFavoritePostsProps } from "@/types/interfaces";
+import {
+  AddFavoritePostProps,
+  CreatePostProps,
+  DeleteFavoritePostProps,
+  GetUserFavoritePostsProps,
+} from "@/types/interfaces";
 import { ID, Query } from "node-appwrite";
 
 export const getPosts = async () => {
@@ -10,6 +17,23 @@ export const getPosts = async () => {
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
       [],
+    );
+
+    return posts?.documents;
+  } catch (error) {
+    console.error("Error during fetching posts:", error);
+    throw error;
+  }
+};
+
+export const getUserPosts = async ({ userID }: GetUserPostsProps) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const posts = await database.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
+      [Query.equal("createdBy", userID)],
     );
 
     return posts?.documents;
@@ -57,7 +81,6 @@ export const addFavoritePost = async ({
       favoritePosts: [...favoritePosts, postID],
     };
 
-    console.log("updated user is:", updatedUser);
 
     await database.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
@@ -89,8 +112,6 @@ export const deleteFavoritePost = async ({
       favoritePosts: favoritePosts.filter(({ $id }: any) => $id !== postID),
     };
 
-    console.log("updated user is:", updatedUser);
-
     await database.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
@@ -102,7 +123,6 @@ export const deleteFavoritePost = async ({
     throw error;
   }
 };
-
 
 export const createPost = async ({
   title,
@@ -127,4 +147,3 @@ export const createPost = async ({
     throw error;
   }
 };
-

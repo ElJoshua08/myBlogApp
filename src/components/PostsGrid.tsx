@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Post } from "./Post";
 import Masonry from "react-masonry-css";
 import { parseToReadableDate } from "@/lib/utils";
-import { getPosts, getUserFavoritePosts } from "@/services/postService";
+import { getPosts, getUserFavoritePosts, getUserPosts } from "@/services/postService";
 import { PostSkeleton } from "./PostSkeleton";
 import { PostProps, PostsGridProps } from "@/types/interfaces";
 
@@ -12,18 +12,28 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
-export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
+const getPostsByType = async (type: "default" | "favorites" | "account", userID: string) => {
+  switch (type) {
+    case "default":
+      return await getPosts();
+    case "favorites":
+      return await getUserFavoritePosts({ userID });
+    case "account":
+      return await getUserPosts({ userID });
+    default:
+      return await getPosts();
+  }
+}
+
+export const PostsGrid = ({ userID, type = "default" }: PostsGridProps) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("fetching posts", userID);
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const fetchedPosts = isFavorites
-          ? await getUserFavoritePosts({ userID })
-          : await getPosts();
+        const fetchedPosts = await getPostsByType(type, userID);
         setPosts(fetchedPosts);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
@@ -33,7 +43,8 @@ export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
     };
 
     fetchPosts();
-  }, [userID, isFavorites]);
+  }, [userID, type]);
+
 
   return (
     <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
@@ -71,7 +82,7 @@ export const PostsGrid = ({ userID, isFavorites = false }: PostsGridProps) => {
                 $createdAt={parseToReadableDate(new Date($createdAt))}
                 userID={userID}
                 title={title}
-                favoriteTo={isFavorites ? [{ $id: userID }] : favoriteTo}
+                favoriteTo={type === "favorites" ? [{ $id: userID }] : favoriteTo}
                 createdBy={createdBy}
                 content={content}
                 className="break-inside-avoid"

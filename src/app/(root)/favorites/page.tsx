@@ -22,9 +22,7 @@ export default function Favorites() {
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
-      <h1
-        className={`page-title`}
-      >
+      <h1 className={`page-title`}>
         Take a look at your{" "}
         <span className="page-title-accent">
           <Image
@@ -38,8 +36,7 @@ export default function Favorites() {
         </span>
       </h1>
 
-      
-      <PostsGrid userID={userID} isFavorites={true} />
+      <PostsGrid userID={userID} type="favorites" />
     </main>
   );
 }

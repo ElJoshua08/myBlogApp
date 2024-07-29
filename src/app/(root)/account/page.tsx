@@ -1,14 +1,12 @@
 "use client";
+import { PostsGrid } from "@/components/PostsGrid";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
-import { getPosts } from "@/services/postService";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const userID = useMemo(() => user?.$id, [user]);
   const router = useRouter();
 
@@ -17,19 +15,6 @@ export default function AccountPage() {
       router.push("/login");
     }
 
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const fetchedPosts = await getPosts();
-        setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
   }, [user, userLoading, router]);
 
   if (userLoading) {
@@ -55,6 +40,8 @@ export default function AccountPage() {
           Account
         </span>
       </h1>
+
+      <PostsGrid userID={userID} type="account" />
     </main>
   );
 }
