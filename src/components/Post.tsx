@@ -80,8 +80,8 @@ const FavoriteButton = ({
     if (isFavorite) {
       try {
         setIsLoading(true);
-        await deleteFavoritePost({ userID, postID });
         setIsfavorite(false);
+        await deleteFavoritePost({ userID, postID });
       } catch (error) {
         console.error("Failed to delete favorite status:", error);
       } finally {
@@ -90,8 +90,8 @@ const FavoriteButton = ({
     } else {
       try {
         setIsLoading(true);
-        await addFavoritePost({ userID, postID });
         setIsfavorite(true);
+        await addFavoritePost({ userID, postID });
       } catch (error) {
         console.error("Failed to update favorite status:", error);
       } finally {
@@ -105,7 +105,7 @@ const FavoriteButton = ({
       onClick={handleClick}
       className={`flex items-center gap-2 rounded-md px-3 py-2 font-nunito text-sm font-semibold transition-all sm:text-base ${
         isFavorite ? "bg-primary-dark text-white" : "bg-accent text-gray-700"
-      } ${isLoading ? "opacity-50" : ""}`}
+      }`}
       disabled={isLoading}
     >
       {isFavorite ? "Favorite" : "Add to Favorites"}
