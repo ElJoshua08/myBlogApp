@@ -111,14 +111,14 @@ const LoginPage = () => {
 
         <ActionButton
           onClick={handleSubmit(onSubmit)}
-          className={isLoading ? "opacity-50" : ""}
+          className={`mt-5 ${isLoading ? "opacity-50" : ""}`}
         >
           Login
           {isLoading && <FaSpinner className="animate-spin" />}
         </ActionButton>
       </form>
       <p className="flex items-center gap-2 text-left text-sm text-gray-600">
-        Don&apost have an account?{" "}
+        {"Don't have an account? "}
         <Link
           href="/register"
           className="text-gray-400 transition-colors hover:text-blue-500"

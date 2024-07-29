@@ -17,13 +17,13 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
   const router = useRouter();
-  const { user, loading } = useAuthenticatedUser();
+  const { user, loading: userLoading } = useAuthenticatedUser();
 
   useEffect(() => {
-    if (!loading && user) {
-      router.push("/");
-    }
-  }, [user, loading, router]);
+    // if (!userLoading && user) {
+    //   router.push("/");
+    // }
+  }, [user, userLoading, router]);
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ const RegisterPage = () => {
     }
   };
 
-  if (loading) {
+  if (userLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <FaSpinner className="animate-spin text-4xl text-gray-500" />
@@ -111,7 +111,7 @@ const RegisterPage = () => {
 
         <ActionButton
           onClick={handleSubmit(onSubmit)}
-          className={isLoading ? "opacity-50" : ""}
+          className={`mt-5 ${isLoading ? "opacity-50" : ""}`}
         >
           Create your account!
           {isLoading && <FaSpinner className="animate-spin" />}

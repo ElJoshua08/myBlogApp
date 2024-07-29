@@ -70,6 +70,10 @@ export default function AccountPage() {
             Settings
           </span>
         </h1>
+
+        <Link href={"/logout"}>
+          Logout
+        </Link>
       </section>
     </main>
   );
