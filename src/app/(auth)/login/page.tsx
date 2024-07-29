@@ -100,7 +100,7 @@ const LoginPage = () => {
                 className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
                 onClick={() => setShowPassword(!showPassword)}
               />
-            )}
+          )}
           </div>
         </div>
         {errors.password && (

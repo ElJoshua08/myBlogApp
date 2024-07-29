@@ -7,17 +7,6 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    animation: {
-      skeleton: "skeleton 1s infinite",
-    },
-
-    keyframes: {
-      skeleton: {
-        "0%, 100%": { brightness: "2" },
-        "50%": { brightness: "0.5" },
-      },
-    },
-
     extend: {
       colors: {
         primary: {
