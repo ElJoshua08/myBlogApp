@@ -5,12 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import {
-  FaArrowRight,
-  FaEye,
-  FaEyeSlash,
-  FaSpinner,
-} from "react-icons/fa";
+import { FaArrowRight, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import { updatePassword, updateUsername } from "@/services/authService";
 
 export default function AccountPage() {
@@ -51,7 +46,7 @@ export default function AccountPage() {
         </h1>
 
         <PostsGrid userID={userID} type="account" limit={3} />
-        
+
         <Link
           href="/account/posts"
           className="relative bottom-0 right-0 mb-5 mr-5 flex items-center justify-center gap-3 text-xl text-accent"
@@ -91,7 +86,7 @@ export default function AccountPage() {
         {/* Logout button */}
         <Link
           href={"/logout"}
-          className="mt-10 flex items-center rounded-md border border-red-400 bg-red-200 px-3 py-1 font-nunito text-2xl uppercase text-slate-700 transition-colors hover:border-red-500 hover:bg-red-300"
+          className="mt-10 flex items-center rounded-md border-2 border-red-400 bg-red-200 px-3 py-1 font-nunito text-2xl uppercase text-slate-700 transition-colors hover:border-red-500 hover:bg-red-300 dark:border-red-600 dark:bg-red-700 dark:text-white dark:hover:border-red-500 dark:hover:bg-red-600"
         >
           Logout
         </Link>
@@ -143,12 +138,12 @@ const SettingsItem = ({
         />
 
         <button
-          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all hover:shadow-accent/70 ${isLoading && "opacity-50"} ${isDisabled && "opacity-50"}`}
+          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all${isLoading && "opacity-50"} ${isDisabled ? "opacity-50" : "hover:shadow-accent/70"}`}
           onClick={handleUpdate}
           disabled={isLoading || isDisabled}
         >
           Update
-          {isLoading && <FaSpinner className="animate-spin inline-block" />}
+          {isLoading && <FaSpinner className="inline-block animate-spin" />}
         </button>
       </div>
     </div>
@@ -206,12 +201,12 @@ const UpdatePasswordItem = ({
         </div>
 
         <button
-          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all hover:shadow-accent/70 ${isLoading && "opacity-50"} ${isDisabled && "opacity-50"}`}
+          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all ${isLoading && "opacity-50"} ${isDisabled ? "opacity-50" : "hover:shadow-accent/70"}`}
           onClick={handleUpdate}
           disabled={isLoading || isDisabled}
         >
           Update
-          {isLoading && <FaSpinner className="animate-spin inline-block" />}
+          {isLoading && <FaSpinner className="inline-block animate-spin" />}
         </button>
       </div>
     </div>

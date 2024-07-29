@@ -1,22 +1,34 @@
 /* Logo */
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 /* Base Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-slate-50 dark:bg-slate-900;
+
+  &::-webkit-scrollbar {
+    @apply w-2 rounded-full bg-slate-200 dark:bg-slate-700;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-accent;
+  }
+}
 
 .header {
   @apply mb-12 font-pacifico text-7xl font-semibold text-purple-300 shadow-purple-900 drop-shadow-md;
 }
 
 .page-title {
-  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-700
+  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-700 dark:text-slate-200;
 }
 
 .page-title-accent {
- @apply relative inline-flex text-primary-dark
+  @apply relative inline-flex text-primary-dark;
 }
 
 .my-masonry-grid {

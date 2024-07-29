@@ -31,7 +31,7 @@ export const Header = () => {
   ];
 
   return (
-    <div className="sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 shadow-md shadow-slate-300/60 backdrop-blur-md">
+    <div className="sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 shadow-md shadow-slate-300/60 backdrop-blur-md dark:bg-slate-700/80 dark:shadow-slate-800/70">
       {/* Logo */}
       <div className="flex items-center justify-center">
         <Image
@@ -81,8 +81,8 @@ const NavItem = ({ item }: NavItemProps) => {
         href={item.href}
         className={`flex items-center gap-2 rounded-md p-2 font-nunito text-xl transition-all duration-150 sm:px-2 sm:py-1 sm:text-lg ${
           isActive
-            ? "bg-blue-300 text-white"
-            : "text-slate-500 hover:bg-blue-200/60"
+            ? "bg-blue-300 text-white dark:bg-blue-500 dark:text-white"
+            : "text-slate-500 dark:text-slate-200 dark:hover:text-slate-100 hover:bg-blue-400/60"
         }`}
       >
         {item.icon}
