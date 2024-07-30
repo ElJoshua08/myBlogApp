@@ -32,7 +32,7 @@ const SuspenseWrapper = () => {
 };
 
 const NoCredentialsPage = () => {
-  const [value, setValue] = useState("josuealejandrof926@gmail.com");
+  const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
 

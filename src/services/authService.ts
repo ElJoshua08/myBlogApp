@@ -122,10 +122,11 @@ export const sendResetPasswordEmail = async (email: string) => {
       throw new Error("User not found");
     }
 
-    await account.createRecovery(
-      email,
-      "http://localhost:3000/forgot-password",
-    );
+    // Usa la variable de entorno para determinar la URL base
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const resetPasswordUrl = `${baseUrl}/forgot-password`;
+
+    await account.createRecovery(email, resetPasswordUrl);
   } catch (error) {
     console.error("Error during send reset password email:", error);
     throw error;
