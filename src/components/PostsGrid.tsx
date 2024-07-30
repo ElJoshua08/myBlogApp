@@ -66,7 +66,10 @@ export const PostsGrid = ({
           columnClassName="my-masonry-grid_column"
         >
           {Array.from({ length: 10 }).map((_, index) => (
-            <PostSkeleton key={index} delay={index * 0.3 * Math.random()} />
+            <PostSkeleton
+              key={index}
+              delay={index * 0.3 * (Math.random() / 2)}
+            />
           ))}
         </Masonry>
       ) : (
@@ -99,7 +102,7 @@ export const PostsGrid = ({
                 createdBy={createdBy}
                 content={content}
                 className="break-inside-avoid"
-                delay={index * 0.3 * Math.random()}
+                delay={index * 0.3 * (Math.random() / 2)}
               />
             ),
           )}

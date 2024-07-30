@@ -12,6 +12,7 @@ import { FaSpinner } from "react-icons/fa";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/ActionButton";
+import { StylizedInput } from "@/components/StylizedInput";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -22,11 +23,11 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { user, loading } = useAuthenticatedUser();
 
-  useEffect(() => {
-    if (!loading && user) {
-      router.push("/");
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     router.push("/");
+  //   }
+  // }, [user, loading, router]);
 
   const {
     register,
@@ -62,47 +63,35 @@ const LoginPage = () => {
       <h1 className="header">Login</h1>
 
       <form
-        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200 dark:bg-slate-700 px-6 py-5 backdrop-blur-md"
+        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200 px-6 py-5 backdrop-blur-md dark:bg-slate-700"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col gap-1">
           <label htmlFor="email">Email</label>
-
-          <input
+          <StylizedInput
             type="email"
             placeholder="Your beautiful email"
-            id="email"
             {...register("email")}
-            className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
           />
           {errors.email && (
             <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
-        <div className="relative flex w-full flex-col gap-1">
+        <div className="flex w-full flex-col gap-1">
           <label htmlFor="password">Password</label>
-          <div className="relative w-full">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Your awesome password"
-              id="password"
-              {...register("password")}
-              className="w-full rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
-            />
-            {showPassword ? (
-              <FaRegEye
-                className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-blue-300"
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            ) : (
-              <FaRegEyeSlash
-                className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-                onClick={() => setShowPassword(!showPassword)}
-              />
-          )}
-          </div>
-          <Link className="text-sm text-slate-500 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300" href="/forgot-password">Forgot password?</Link>
+          <StylizedInput
+            type="password"
+            placeholder="Your awesome password"
+            {...register("password")}
+          />
+
+          <Link
+            className="text-sm text-slate-500 transition-colors hover:text-blue-500 dark:text-slate-200 dark:hover:text-blue-300"
+            href="/forgot-password"
+          >
+            Forgot password?
+          </Link>
         </div>
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
@@ -122,7 +111,7 @@ const LoginPage = () => {
         {"Don't have an account? "}
         <Link
           href="/register"
-          className="text-slate-400 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
+          className="text-slate-400 transition-colors hover:text-blue-500 dark:text-slate-200 dark:hover:text-blue-300"
         >
           Register here
         </Link>

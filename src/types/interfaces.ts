@@ -14,6 +14,11 @@ export interface PostSkeletonProps {
   delay?: number;
 }
 
+export interface CredentialsPageProps {
+  userId: string;
+  secret: string;
+}
+
 export interface GetUserPostsProps {
   userID: string;
   limit?: number;

@@ -114,7 +114,6 @@ const SettingsItem = ({
   }, [inputValue, value]);
 
   const handleUpdate = async () => {
-    console.log("Updating...");
     setIsLoading(true);
     await onUpdate(inputValue);
     setIsLoading(false);
@@ -168,7 +167,6 @@ const UpdatePasswordItem = ({
   }, [inputValue]);
 
   const handleUpdate = async () => {
-    console.log("Updating...");
     setIsLoading(true);
     await onUpdate(inputValue);
     setIsLoading(false);

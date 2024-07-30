@@ -1,88 +1,113 @@
 "use client";
 
+import { useState } from "react";
+import ActionButton from "@/components/ActionButton";
+import { StylizedInput } from "@/components/StylizedInput";
 import {
   recoverPassword,
   sendResetPasswordEmail,
 } from "@/services/authService";
+import { CredentialsPageProps } from "@/types/interfaces";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const secret = searchParams.get("secret");
 
-  const [emailValue, setemailValue] = useState("josuealejandrof926@gmail.com");
-  const [passwordValue, setPasswordValue] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
+  if (!userId || !secret) {
+    return <NoCredentialsPage />;
+  }
+
+  return <CredentialsPage userId={userId} secret={secret} />;
+}
+
+const NoCredentialsPage = () => {
+  const [value, setValue] = useState("josuealejandrof926@gmail.com");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const handleSubmit = async () => {
-    await sendResetPasswordEmail(emailValue);
+    setIsLoading(true);
+    await sendResetPasswordEmail(value);
+    setIsLoading(false);
+    setIsSent(true);
   };
 
-  const handleUpdatePassword = async () => {
-    await recoverPassword(userId!, secret!, passwordValue);
-    router.push("/");
-  };
-
-  console.log("userId", userId);
-  console.log("secret", secret);
-
-  if (userId && secret) {
-    return (
-      <main className="flex flex-col items-center justify-center gap-5">
-        <h1 className="header">Enter your new password</h1>
-        <div className="relative">
-          <input
-            type={isVisible ? "text" : "password"}
-            placeholder="Password"
-            value={passwordValue}
-            onChange={(e) => setPasswordValue(e.target.value)}
-          />
-          {isVisible ? (
-            <FaEyeSlash
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-              onClick={() => setIsVisible(!isVisible)}
-            />
-          ) : (
-            <FaEye
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-              onClick={() => setIsVisible(!isVisible)}
-            />
-          )}
-        </div>
-
-        <button
-          className="mt-5 flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl text-gray-100 transition-colors hover:bg-accent/70 hover:text-white"
-          onClick={handleUpdatePassword}
-        >
-          Update Password
-        </button>
-      </main>
-    );
-  }
   return (
-    <main className="flex flex-col items-center justify-center gap-5">
-      <h1 className="header">Forgot Password</h1>
-      <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-        Enter your email address and we will send you a link to reset your
-        password.
+    <main className="flex w-full flex-grow flex-col items-center justify-start gap-2">
+      <h1 className="header mb-5 mt-10">Forgot your password?</h1>
+      <p className="text-nunito max-w-[60ch] text-center text-xl text-slate-700 dark:text-slate-200">
+        {
+          "Don't worry, we'll send you a link to reset your password. You'll just need to enter your email address."
+        }
       </p>
-      <input
+      <StylizedInput
         type="email"
         placeholder="Email"
-        value={emailValue}
-        onChange={(e) => setemailValue(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="!mt-20 min-w-64"
       />
 
-      <button
-        className="mt-5 flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl text-gray-100 transition-colors hover:bg-accent/70 hover:text-white"
+      <ActionButton
         onClick={handleSubmit}
+        className={`mt-10 !text-4xl ${isLoading ? "opacity-50" : ""}`}
       >
-        Send Link
-      </button>
+        {isLoading && !isSent ? "Sending..." : "Send Link"}
+        {isLoading && <FaSpinner className="animate-spin" />}
+      </ActionButton>
+      {isSent && (
+        <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+          {
+            "Link sent! if you don't receive it, check your spam folder or click here to resend it. "
+          }
+          <span onClick={handleSubmit} className="underline">
+            Resend link
+          </span>
+        </p>
+      )}
     </main>
   );
-}
+};
+
+const CredentialsPage = ({ userId, secret }: CredentialsPageProps) => {
+  const [passwordValue, setPasswordValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleUpdatePassword = async () => {
+    try {
+      setIsLoading(true);
+      await recoverPassword(userId!, secret!, passwordValue);
+      router.push("/");
+    } catch (err) {
+      console.log("Error", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="flex w-full flex-grow flex-col items-center justify-start gap-2">
+      <h1 className="header mb-5 mt-10 text-center">
+        Now you just need to enter your new password
+      </h1>
+      <StylizedInput
+        type="password"
+        placeholder="Password"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+      />
+
+      <ActionButton
+        onClick={handleUpdatePassword}
+        className={`mt-10 !text-4xl ${isLoading ? "opacity-50" : ""}`}
+      >
+        Update Password
+        {isLoading && <FaSpinner className="animate-spin" />}
+      </ActionButton>
+    </main>
+  );
+};

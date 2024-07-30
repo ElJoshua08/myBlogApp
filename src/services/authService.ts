@@ -126,8 +126,6 @@ export const sendResetPasswordEmail = async (email: string) => {
       email,
       "http://localhost:3000/forgot-password",
     );
-
-    console.log("Email sent");
   } catch (error) {
     console.error("Error during send reset password email:", error);
     throw error;
@@ -136,7 +134,6 @@ export const sendResetPasswordEmail = async (email: string) => {
 
 export const recoverPassword = async (userId: string, secret: string, password: string) => {
   try {
-    console.log("userId", userId);
     const { account } = await createAdminClient();
 
     await account.updateRecovery(userId, secret, password);
