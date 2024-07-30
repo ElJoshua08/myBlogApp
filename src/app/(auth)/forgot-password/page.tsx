@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
 import {
@@ -17,10 +17,11 @@ export default function ForgotPasswordPage() {
   const secret = searchParams.get("secret");
 
   if (!userId || !secret) {
-    return <NoCredentialsPage />;
+
+    return <Suspense> <NoCredentialsPage /> </Suspense>;
   }
 
-  return <CredentialsPage userId={userId} secret={secret} />;
+  return <Suspense> <CredentialsPage userId={userId} secret={secret} /> </Suspense>;
 }
 
 const NoCredentialsPage = () => {
