@@ -118,11 +118,11 @@ const RegisterPage = () => {
         </ActionButton>
       </form>
 
-      <p className="flex items-center gap-2 text-left text-sm text-gray-600">
+      <p className="flex items-center gap-2 text-left text-sm text-slate-600 dark:text-slate-400">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="text-gray-400 transition-colors hover:text-blue-500"
+          className="text-slate-400 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
         >
           Login here
         </Link>

@@ -62,7 +62,7 @@ const LoginPage = () => {
       <h1 className="header">Login</h1>
 
       <form
-        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200/30 px-6 py-5 backdrop-blur-md"
+        className="flex w-72 flex-col gap-3 rounded-md bg-slate-200 dark:bg-slate-700 px-6 py-5 backdrop-blur-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col gap-1">
@@ -102,6 +102,7 @@ const LoginPage = () => {
               />
           )}
           </div>
+          <Link className="text-sm text-slate-500 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300" href="/forgot-password">Forgot password?</Link>
         </div>
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
@@ -117,11 +118,11 @@ const LoginPage = () => {
           {isLoading && <FaSpinner className="animate-spin" />}
         </ActionButton>
       </form>
-      <p className="flex items-center gap-2 text-left text-sm text-gray-600">
+      <p className="flex items-center gap-2 text-left text-sm text-slate-600 dark:text-slate-400">
         {"Don't have an account? "}
         <Link
           href="/register"
-          className="text-gray-400 transition-colors hover:text-blue-500"
+          className="text-slate-400 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
         >
           Register here
         </Link>

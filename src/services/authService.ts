@@ -1,7 +1,7 @@
 "use server";
 
 import { createSessionClient, createAdminClient } from "@/lib/appwrite";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { LoginProps, RegisterProps } from "@/types/interfaces";
@@ -102,6 +102,46 @@ export const updatePassword = async (password: string) => {
     await account.updatePassword(password);
   } catch (error) {
     console.error("Error during update password:", error);
+    throw error;
+  }
+};
+
+export const sendResetPasswordEmail = async (email: string) => {
+  try {
+    const { database, account } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      [Query.equal("email", email)],
+    );
+
+    const isUser = user.documents.length > 0;
+
+    if (!isUser) {
+      throw new Error("User not found");
+    }
+
+    await account.createRecovery(
+      email,
+      "http://localhost:3000/forgot-password",
+    );
+
+    console.log("Email sent");
+  } catch (error) {
+    console.error("Error during send reset password email:", error);
+    throw error;
+  }
+};
+
+export const recoverPassword = async (userId: string, secret: string, password: string) => {
+  try {
+    console.log("userId", userId);
+    const { account } = await createAdminClient();
+
+    await account.updateRecovery(userId, secret, password);
+  } catch (error) {
+    console.error("Error during recover password:", error);
     throw error;
   }
 };
