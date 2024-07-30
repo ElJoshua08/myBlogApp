@@ -12,17 +12,30 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaSpinner } from "react-icons/fa";
 
 export default function ForgotPasswordPage() {
+  return <SuspenseWrapper />;
+}
+
+const SuspenseWrapper = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const secret = searchParams.get("secret");
 
   if (!userId || !secret) {
-
-    return <Suspense> <NoCredentialsPage /> </Suspense>;
+    return (
+      <Suspense>
+        {" "}
+        <NoCredentialsPage />{" "}
+      </Suspense>
+    );
   }
 
-  return <Suspense> <CredentialsPage userId={userId} secret={secret} /> </Suspense>;
-}
+  return (
+    <Suspense>
+      {" "}
+      <CredentialsPage userId={userId} secret={secret} />{" "}
+    </Suspense>
+  );
+};
 
 const NoCredentialsPage = () => {
   const [value, setValue] = useState("josuealejandrof926@gmail.com");
