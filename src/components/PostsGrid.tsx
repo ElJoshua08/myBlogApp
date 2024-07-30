@@ -68,7 +68,7 @@ export const PostsGrid = ({
           {Array.from({ length: 10 }).map((_, index) => (
             <PostSkeleton
               key={index}
-              delay={index * 0.3 * (Math.random() / 2)}
+              delay={index * 0.3 * Math.random()}
             />
           ))}
         </Masonry>

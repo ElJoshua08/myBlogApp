@@ -7,6 +7,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { FaArrowRight, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import { updatePassword, updateUsername } from "@/services/authService";
+import { StylizedInput } from "@/components/StylizedInput";
+import ActionButton from "@/components/ActionButton";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -81,7 +83,12 @@ export default function AccountPage() {
             onUpdate={updateUsername}
           />
           {/* Update password */}
-          <UpdatePasswordItem onUpdate={updatePassword} />
+          <SettingsItem
+            isPassword
+            label="Update Password"
+            value=""
+            onUpdate={updatePassword}
+          />
         </div>
         {/* Logout button */}
         <Link
@@ -99,15 +106,16 @@ const SettingsItem = ({
   label,
   value,
   onUpdate,
+  isPassword = false,
 }: {
   value: string;
   label: string;
   onUpdate: (value: string) => Promise<void>;
+  isPassword?: boolean;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState(value);
   const [isDisabled, setIsDisabled] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsDisabled(inputValue === value);
@@ -126,24 +134,32 @@ const SettingsItem = ({
 
   return (
     <div className="flex flex-col items-start justify-start gap-2">
-      <p className="font-nunito text-xl font-semibold">{label}</p>
+      <p className="font-nunito text-xl font-semibold text-slate-700 dark:text-slate-300">
+        {label}
+      </p>
       <div className="flex items-center justify-center gap-2">
-        <input
-          type="text"
-          ref={inputRef}
-          className={`rounded-md border-2 border-gray-300/60 p-2 font-nunito outline-none transition-all`}
-          value={inputValue}
-          onChange={onInputChange}
-        />
+        {isPassword ? (
+          <StylizedInput
+            type="password"
+            value={inputValue}
+            onChange={onInputChange}
+          />
+        ) : (
+          <StylizedInput
+            type="text"
+            value={inputValue}
+            onChange={onInputChange}
+          />
+        )}
 
-        <button
-          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all${isLoading && "opacity-50"} ${isDisabled ? "opacity-50" : "hover:shadow-accent/70"}`}
+        <ActionButton
+          className="text-xl"
           onClick={handleUpdate}
           disabled={isLoading || isDisabled}
         >
           Update
-          {isLoading && <FaSpinner className="inline-block animate-spin" />}
-        </button>
+          {isLoading && <FaSpinner className="animate-spin" />}
+        </ActionButton>
       </div>
     </div>
   );
@@ -175,7 +191,9 @@ const UpdatePasswordItem = ({
 
   return (
     <div className="flex flex-col items-start justify-center gap-2">
-      <p className="font-nunito text-xl font-semibold">Update Password</p>
+      <p className="font-nunito text-xl font-semibold dark:text-slate-300">
+        Update Password
+      </p>
       <div className="flex flex-row items-center gap-2">
         <div className="relative">
           <input

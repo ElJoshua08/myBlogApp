@@ -16,10 +16,11 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
   value,
   onChange,
   className = "",
-  isPassword = false,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = type === "password";
 
   if (!isPassword) {
     return (
