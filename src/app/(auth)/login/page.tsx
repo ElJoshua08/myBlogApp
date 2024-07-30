@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
@@ -67,9 +66,10 @@ const LoginPage = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col gap-1">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className="text-slate-700 text-lg dark:text-slate-200">Email</label>
           <StylizedInput
             type="email"
+            variant="secondary"
             placeholder="Your beautiful email"
             {...register("email")}
           />
@@ -79,9 +79,10 @@ const LoginPage = () => {
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password" className="text-slate-700 text-lg dark:text-slate-200">Password</label>
           <StylizedInput
             type="password"
+            variant="secondary"
             placeholder="Your awesome password"
             {...register("password")}
           />

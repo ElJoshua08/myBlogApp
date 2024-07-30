@@ -7,7 +7,6 @@ import React from "react";
 // Extending the props from React.InputHTMLAttributes<HTMLInputElement>
 interface StylizedInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  isPassword?: boolean;
   variant?: "primary" | "secondary" | "accent" | "error" | "ghost";
 }
 
@@ -27,7 +26,7 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
   // Define variant styles
   const variantStyles: { [key: string]: string } = {
     primary: "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-400",
-    secondary: "bg-gray-500 text-white hover:bg-gray-600 dark:bg-gray-400",
+    secondary: "bg-gray-500 text-white hover:bg-gray-600 dark:bg-gray-700 dark:text-slate-100 placeholder:text-slate-300",
     accent: "bg-green-500 text-white hover:bg-green-600 dark:bg-green-400",
     error: "bg-red-800/70 text-white hover:bg-red-600 dark:bg-red-400",
     ghost:
@@ -56,7 +55,7 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={inputClasses}
+        className={`w-full ${inputClasses}`}
         {...props}
       />
       {showPassword ? (

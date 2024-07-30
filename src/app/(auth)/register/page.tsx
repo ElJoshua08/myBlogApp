@@ -12,6 +12,7 @@ import { FaSpinner } from "react-icons/fa";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import ActionButton from "@/components/ActionButton";
+import { StylizedInput } from "@/components/StylizedInput";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -68,44 +69,59 @@ const RegisterPage = () => {
         className="flex w-72 flex-col gap-6 rounded-md bg-slate-300/30 px-6 py-5 backdrop-blur-md"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input
-          type="text"
-          placeholder="Name"
-          {...formRegister("name")}
-          className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
-        />
-        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-
-        <input
-          type="email"
-          placeholder="Email"
-          {...formRegister("email")}
-          className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
-        />
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            {...formRegister("password")}
-            className="w-full rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
+        <div className="flex w-full flex-col gap-1">
+          <label
+            htmlFor="name"
+            className="text-lg text-slate-700 dark:text-slate-200"
+          >
+            Name
+          </label>
+          <StylizedInput
+            type="name"
+            variant="secondary"
+            placeholder="Your beautiful name"
+            {...formRegister("name")}
           />
-          {showPassword ? (
-            <FaRegEye
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-blue-300"
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          ) : (
-            <FaRegEyeSlash
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-              onClick={() => setShowPassword(!showPassword)}
-            />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
-        {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
-        )}
+
+        <div className="flex w-full flex-col gap-1">
+          <label
+            htmlFor="email"
+            className="text-lg text-slate-700 dark:text-slate-200"
+          >
+            Email
+          </label>
+          <StylizedInput
+            type="email"
+            variant="secondary"
+            placeholder="Your beautiful Email"
+            {...formRegister("email")}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div className="flex w-full flex-col gap-1">
+          <label
+            htmlFor="password"
+            className="text-lg text-slate-700 dark:text-slate-200"
+          >
+            Password
+          </label>
+          <StylizedInput
+            type="password"
+            variant="secondary"
+            placeholder="Your secret password"
+            {...formRegister("password")}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
+        </div>
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -122,7 +138,7 @@ const RegisterPage = () => {
         Already have an account?{" "}
         <Link
           href="/login"
-          className="text-slate-400 dark:text-slate-200 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
+          className="text-slate-400 transition-colors hover:text-blue-500 dark:text-slate-200 dark:hover:text-blue-300"
         >
           Login here
         </Link>
