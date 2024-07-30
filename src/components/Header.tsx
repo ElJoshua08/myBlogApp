@@ -2,10 +2,10 @@
 
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { FaHome, FaStar, FaUser } from "react-icons/fa";
 import { NavItemProps } from "@/types/interfaces";
+import { Logo } from "./Logo";
 
 export const Header = () => {
   const { user, loading } = useAuthenticatedUser();
@@ -34,13 +34,7 @@ export const Header = () => {
     <div className="sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg bg-slate-200/50 shadow-md shadow-slate-300/60 backdrop-blur-md dark:bg-slate-700/80 dark:shadow-slate-800/70">
       {/* Logo */}
       <div className="flex items-center justify-center">
-        <Image
-          src={"/logo/logo.svg"}
-          width={0}
-          height={0}
-          alt="logo"
-          className="size-16"
-        />
+        <Logo className="size-16" />
         <h1 className="hidden font-pacifico text-2xl font-semibold tracking-wide text-accent sm:flex">
           My blog
         </h1>

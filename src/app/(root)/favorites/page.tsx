@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import Image from "next/image";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { PostsGrid } from "@/components/PostsGrid";
 import { useRouter } from "next/navigation";
+import { Line } from "@/components/Line";
 
 export default function Favorites() {
   const router = useRouter();
@@ -27,13 +27,7 @@ export default function Favorites() {
       <h1 className={`page-title`}>
         Take a look at your{" "}
         <span className="page-title-accent">
-          <Image
-            src={"/LineName.svg"}
-            width={0}
-            height={0}
-            alt=""
-            className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
-          />
+          <Line className="absolute top-full h-full w-full" />
           Favorites
         </span>
       </h1>

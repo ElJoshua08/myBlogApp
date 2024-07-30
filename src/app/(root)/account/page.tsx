@@ -1,14 +1,14 @@
 "use client";
 import { PostsGrid } from "@/components/PostsGrid";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { FaArrowRight, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import { FaArrowRight, FaSpinner } from "react-icons/fa";
 import { updatePassword, updateUsername } from "@/services/authService";
 import { StylizedInput } from "@/components/StylizedInput";
 import ActionButton from "@/components/ActionButton";
+import { Line } from "@/components/Line";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -23,8 +23,10 @@ export default function AccountPage() {
 
   if (userLoading) {
     return (
+      // Make and spinner
       <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
         <h1 className="text-6xl font-semibold">Loading...</h1>
+        <FaSpinner className="animate-spin" />
       </div>
     );
   }
@@ -33,16 +35,10 @@ export default function AccountPage() {
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* Posts */}
       <section className="relative flex flex-col items-center justify-center gap-2">
-        <h1 className={`page-title`}>
+        <h1 className={`page-title relative`}>
           Take a look at your{" "}
           <span className="page-title-accent">
-            <Image
-              src={"/LineName.svg"}
-              width={0}
-              height={0}
-              alt=""
-              className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
-            />
+            <Line className="absolute top-full h-full w-full" />
             Account
           </span>
         </h1>
@@ -64,13 +60,7 @@ export default function AccountPage() {
         <h1 className={`page-title`}>
           Here are your{" "}
           <span className="page-title-accent">
-            <Image
-              src={"/LineName.svg"}
-              width={0}
-              height={0}
-              alt=""
-              className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
-            />
+            <Line className="absolute top-full h-full w-full" />
             Settings
           </span>
         </h1>
@@ -91,12 +81,15 @@ export default function AccountPage() {
           />
         </div>
         {/* Logout button */}
-        <Link
-          href={"/logout"}
-          className="mt-10 flex items-center rounded-md border-2 border-red-400 bg-red-200 px-3 py-1 font-nunito text-2xl uppercase text-slate-700 transition-colors hover:border-red-500 hover:bg-red-300 dark:border-red-600 dark:bg-red-700 dark:text-white dark:hover:border-red-500 dark:hover:bg-red-600"
+        <ActionButton
+          variant="error"
+          onClick={() => {
+            router.push("/logout");
+          }}
+          className="!px-3 !text-2xl"
         >
           Logout
-        </Link>
+        </ActionButton>
       </section>
     </main>
   );
@@ -138,19 +131,12 @@ const SettingsItem = ({
         {label}
       </p>
       <div className="flex items-center justify-center gap-2">
-        {isPassword ? (
-          <StylizedInput
-            type="password"
-            value={inputValue}
-            onChange={onInputChange}
-          />
-        ) : (
-          <StylizedInput
-            type="text"
-            value={inputValue}
-            onChange={onInputChange}
-          />
-        )}
+        <StylizedInput
+          type={isPassword ? "password" : "text"}
+          value={inputValue}
+          onChange={onInputChange}
+          variant="ghost"
+        />
 
         <ActionButton
           className="text-xl"
@@ -160,70 +146,6 @@ const SettingsItem = ({
           Update
           {isLoading && <FaSpinner className="animate-spin" />}
         </ActionButton>
-      </div>
-    </div>
-  );
-};
-
-const UpdatePasswordItem = ({
-  onUpdate,
-}: {
-  onUpdate: (value: string) => Promise<void>;
-}) => {
-  const [inputValue, setInputValue] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  useEffect(() => {
-    setIsDisabled(inputValue === "");
-  }, [inputValue]);
-
-  const handleUpdate = async () => {
-    setIsLoading(true);
-    await onUpdate(inputValue);
-    setIsLoading(false);
-    setIsDisabled(true);
-  };
-
-  return (
-    <div className="flex flex-col items-start justify-center gap-2">
-      <p className="font-nunito text-xl font-semibold dark:text-slate-300">
-        Update Password
-      </p>
-      <div className="flex flex-row items-center gap-2">
-        <div className="relative">
-          <input
-            type={isVisible ? "text" : "password"}
-            value={inputValue}
-            onChange={handleChange}
-            className="rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300"
-            placeholder="New password"
-          />
-          {isVisible ? (
-            <FaEyeSlash
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-              onClick={() => setIsVisible(!isVisible)}
-            />
-          ) : (
-            <FaEye
-              className="absolute right-2 top-[50%] size-6 translate-y-[-50%] cursor-pointer text-gray-400"
-              onClick={() => setIsVisible(!isVisible)}
-            />
-          )}
-        </div>
-
-        <button
-          className={`flex items-center justify-center gap-3 rounded-md bg-accent px-3 py-2 text-xl shadow-lg transition-all ${isLoading && "opacity-50"} ${isDisabled ? "opacity-50" : "hover:shadow-accent/70"}`}
-          onClick={handleUpdate}
-          disabled={isLoading || isDisabled}
-        >
-          Update
-          {isLoading && <FaSpinner className="inline-block animate-spin" />}
-        </button>
       </div>
     </div>
   );

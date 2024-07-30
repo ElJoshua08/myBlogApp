@@ -8,6 +8,7 @@ import React from "react";
 interface StylizedInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   isPassword?: boolean;
+  variant?: "primary" | "secondary" | "accent" | "error" | "ghost";
 }
 
 export const StylizedInput: React.FC<StylizedInputProps> = ({
@@ -16,11 +17,24 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
   value,
   onChange,
   className = "",
+  variant = "primary",
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
+
+  // Define variant styles
+  const variantStyles: { [key: string]: string } = {
+    primary: "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-400",
+    secondary: "bg-gray-500 text-white hover:bg-gray-600 dark:bg-gray-400",
+    accent: "bg-green-500 text-white hover:bg-green-600 dark:bg-green-400",
+    error: "bg-red-800/70 text-white hover:bg-red-600 dark:bg-red-400",
+    ghost:
+      "bg-200/70 dark:bg-gray-800/70 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700",
+  };
+
+  const inputClasses = `rounded border-2 border-gray-300/60 p-2 outline-none transition-all ${className} ${variantStyles[variant]}`;
 
   if (!isPassword) {
     return (
@@ -29,7 +43,7 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300 ${className}`}
+        className={inputClasses}
         {...props}
       />
     );
@@ -42,7 +56,7 @@ export const StylizedInput: React.FC<StylizedInputProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`rounded border-2 border-gray-300/60 p-2 outline-none transition-all hover:border-blue-300 focus:border-blue-300 ${className}`}
+        className={inputClasses}
         {...props}
       />
       {showPassword ? (

@@ -1,11 +1,11 @@
 "use client";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
-import Image from "next/image";
 import { useEffect, useMemo } from "react";
 import { FaPlus } from "react-icons/fa";
 import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
 import { PostsGrid } from "@/components/PostsGrid";
+import { Line } from "@/components/Line";
 
 export default function Home() {
   const router = useRouter();
@@ -32,13 +32,7 @@ export default function Home() {
       <h1 className={`page-title`}>
         Welcome back{" "}
         <span className="page-title-accent">
-          <Image
-            src={"/LineName.svg"}
-            width={0}
-            height={0}
-            alt=""
-            className="absolute bottom-0 left-2 h-8 w-56 translate-y-6 select-none"
-          />
+          <Line className="absolute top-full h-full w-full" />
           {user && user.name}
         </span>
       </h1>
