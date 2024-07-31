@@ -8,8 +8,9 @@ import { PostsGrid } from "@/components/PostsGrid";
 import { Line } from "@/components/Line";
 
 export default function Home() {
-  const router = useRouter();
   const { user, loading: userLoading } = useAuthenticatedUser();
+
+  const router = useRouter();
   const userID = useMemo(() => user?.$id, [user]);
 
   useEffect(() => {
@@ -19,14 +20,9 @@ export default function Home() {
       router.push("/login");
       return;
     }
-  }, [user, userLoading, router]);
+  }, [user, router, userLoading]);
 
-  return userLoading ? (
-    <div className="flex w-full flex-grow items-center justify-center gap-3">
-      {" "}
-      Loading{" "}
-    </div>
-  ) : (
+  return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* User welcome */}
       <h1 className={`page-title`}>
