@@ -83,7 +83,7 @@ const FavoriteButton = ({
           : await addFavoritePost({ userID, postID });
       }
     } catch (error) {
-      console.error("Failed to delete favorite status:", error);
+      console.error("Error during favorite status update", error);
     }
   };
 

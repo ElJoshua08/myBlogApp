@@ -135,7 +135,7 @@ const SettingsItem = ({
         />
 
         <ActionButton
-          className="text-xl"
+          className={`!text-xl ${isLoading ? "opacity-50" : ""}`}
           onClick={handleUpdate}
           disabled={isLoading || isDisabled}
         >

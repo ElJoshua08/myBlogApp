@@ -93,7 +93,7 @@ const CredentialsPage = ({ userId, secret }: CredentialsPageProps) => {
       await recoverPassword({ userId, secret, password: value });
       router.push("/");
     } catch (err) {
-      console.log("Error", err);
+      console.error("Error during password recovery", err);
     } finally {
       setIsLoading(false);
     }

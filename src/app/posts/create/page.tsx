@@ -8,8 +8,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import ActionButton from "@/components/ActionButton";
 import Link from "next/link";
+import ActionButton from "@/components/ActionButton";
 
 type CreatePostFormInputs = z.infer<typeof postSchema>;
 
@@ -76,14 +76,14 @@ export default function CreatePostPage() {
         )}
 
         {error && <p className="text-red-500">{error}</p>}
-        <button
-          type="submit"
-          className={`flex items-center justify-center gap-5 rounded bg-blue-500 p-2 text-lg text-white shadow-lg shadow-transparent transition-all hover:shadow-blue-500/70 ${isLoading ? "opacity-50" : ""}`}
-          disabled={isLoading}
+        <ActionButton
+          onClick={handleSubmit(onSubmit)}
+          variant="primary"
+          className={`mt-5 ${isLoading ? "opacity-50" : ""}`}
         >
           Post!
           {isLoading && <FaSpinner className="animate-spin" />}
-        </button>
+        </ActionButton>
       </form>
 
       <Link

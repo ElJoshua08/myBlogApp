@@ -53,7 +53,7 @@ export const PostsGrid = ({
         const fetchedPosts = await getPostsByType({ type, userID, limit });
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error("Failed to fetch posts:", error);
+        console.error("Error during post fetching", error);
       } finally {
         setIsLoading(false);
       }
