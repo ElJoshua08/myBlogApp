@@ -15,18 +15,17 @@ import { StylizedInput } from "@/components/StylizedInput";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
-const LoginPage = () => {
+export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const { user, loading } = useAuthenticatedUser();
 
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     router.push("/");
-  //   }
-  // }, [user, loading, router]);
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   const {
     register,
@@ -131,4 +130,3 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
