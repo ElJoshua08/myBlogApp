@@ -66,7 +66,12 @@ const LoginPage = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full flex-col gap-1">
-          <label htmlFor="email" className="text-slate-700 text-lg dark:text-slate-200">Email</label>
+          <label
+            htmlFor="email"
+            className="text-lg text-slate-700 dark:text-slate-200"
+          >
+            Email
+          </label>
           <StylizedInput
             type="email"
             variant="secondary"
@@ -79,7 +84,12 @@ const LoginPage = () => {
         </div>
 
         <div className="flex w-full flex-col gap-1">
-          <label htmlFor="password" className="text-slate-700 text-lg dark:text-slate-200">Password</label>
+          <label
+            htmlFor="password"
+            className="text-lg text-slate-700 dark:text-slate-200"
+          >
+            Password
+          </label>
           <StylizedInput
             type="password"
             variant="secondary"

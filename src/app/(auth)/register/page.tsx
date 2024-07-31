@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { register } from "@/services/authService";
+import { register as registerUser } from "@/services/authService";
 import { registerSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
@@ -21,9 +20,9 @@ const RegisterPage = () => {
   const { user, loading: userLoading } = useAuthenticatedUser();
 
   useEffect(() => {
-    // if (!userLoading && user) {
-    //   router.push("/");
-    // }
+    if (!userLoading && user) {
+      router.push("/");
+    }
   }, [user, userLoading, router]);
 
   const [error, setError] = useState<string | null>(null);
@@ -43,8 +42,7 @@ const RegisterPage = () => {
 
     try {
       setIsLoading(true);
-      await register({ name, email, password });
-
+      await registerUser({ name, email, password });
       router.push("/");
     } catch (err) {
       setError("Failed to register. Please try again.");
@@ -77,13 +75,13 @@ const RegisterPage = () => {
             Name
           </label>
           <StylizedInput
-            type="name"
+            type="text"
             variant="secondary"
             placeholder="Your beautiful name"
             {...formRegister("name")}
           />
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name?.message}</p>
           )}
         </div>
 
@@ -101,7 +99,7 @@ const RegisterPage = () => {
             {...formRegister("email")}
           />
           {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+            <p className="text-sm text-red-500">{errors.email?.message}</p>
           )}
         </div>
 
@@ -118,8 +116,8 @@ const RegisterPage = () => {
             placeholder="Your secret password"
             {...formRegister("password")}
           />
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+          {errors.password && (
+            <p className="text-sm text-red-500">{errors.password?.message}</p>
           )}
         </div>
 

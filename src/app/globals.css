@@ -24,7 +24,7 @@ body {
 }
 
 .page-title {
-  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-6xl font-normal text-slate-700 dark:text-slate-200;
+  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-5xl sm:text-6xl font-normal text-slate-700 dark:text-slate-200;
 }
 
 .page-title-accent {

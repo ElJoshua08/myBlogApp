@@ -54,6 +54,7 @@ const NoCredentialsPage = () => {
       <StylizedInput
         type="email"
         placeholder="Email"
+        variant="ghost"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         className="!mt-20 min-w-64"
@@ -105,6 +106,7 @@ const CredentialsPage = ({ userId, secret }: CredentialsPageProps) => {
       <StylizedInput
         type="password"
         placeholder="Password"
+        variant="ghost"
         value={passwordValue}
         onChange={(e) => setPasswordValue(e.target.value)}
       />
