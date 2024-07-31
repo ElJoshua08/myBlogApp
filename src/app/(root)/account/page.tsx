@@ -48,7 +48,7 @@ export default function AccountPage() {
 
         <Link
           href="/account/posts"
-          className="relative bottom-0 right-0 mb-5 mr-5 flex items-center justify-center gap-3 text-xl text-accent"
+          className="relative bottom-0 right-0 mb-5 mr-5 flex items-center justify-center gap-3 text-xl text-accent-dark dark:text-accent-light"
         >
           <span className="inline">See all your posts</span>
           <FaArrowRight className="inline-block" />

@@ -8,10 +8,10 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-50 dark:bg-slate-900;
+  @apply bg-background dark:bg-dark-background;
 
   &::-webkit-scrollbar {
-    @apply w-2 rounded-full bg-slate-200 dark:bg-slate-700;
+    @apply bg-background-dark dark:bg-dark-background-dark w-2 rounded-full;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -20,21 +20,21 @@ body {
 }
 
 .header {
-  @apply mb-12 font-pacifico text-7xl font-semibold text-purple-500 dark:text-purple-200 shadow-purple-900 drop-shadow-md dark:stroke-black dark:stroke-2;
+  @apply text-header dark:text-dark-header mb-12 font-pacifico text-7xl font-semibold shadow-purple-900 drop-shadow-md;
 }
 
 .page-title {
-  @apply left-0 top-0 ml-3 mt-3 self-start font-pacifico text-5xl sm:text-6xl font-normal text-slate-700 dark:text-slate-200;
+  @apply text-header dark:text-dark-header left-0 top-0 ml-3 mt-3 self-start font-pacifico text-5xl font-normal sm:text-6xl;
 }
 
 .page-title-accent {
-  @apply relative inline-flex text-primary-dark;
+  @apply relative inline-flex text-primary;
 }
 
 .my-masonry-grid {
   display: flex;
   margin-left: -16px; /* Spacing between columns */
-  width: 100%;
+  width: auto;
 }
 .my-masonry-grid_column {
   padding-left: 16px; /* Spacing between columns */

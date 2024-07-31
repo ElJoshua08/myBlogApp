@@ -36,10 +36,10 @@ export default function Home() {
       <ActionButton
         onClick={() => router.push("/posts/create")}
         variant="accent"
-        className="fixed bottom-0 right-0 mb-5 mr-5"
+        className="fixed bottom-0 right-0 mb-3 mr-2"
       >
-        <span className="hidden sm:inline">Create Post</span>{" "}
-        <FaPlus className="inline-block" />
+        <span className="hidden sm:inline transition-all">Create Post</span>{" "}
+        <FaPlus className="inline-block text-3xl sm:text-lg transition-all" />
       </ActionButton>
     </main>
   );

@@ -33,20 +33,20 @@ export const Post = ({
       <div className="mb-2 flex items-center gap-2">
         <div className="flex size-9 items-center justify-center rounded-full border border-slate-400 bg-slate-300 dark:border-2 dark:border-slate-500 dark:bg-slate-600">
           {/* TODO: get username initials */}
-          <p className="font-nunito text-2xl font-bold text-slate-700 dark:text-white">
+          <p className="text-header dark:text-dark-header font-nunito text-2xl font-bold">
             {userName.slice(0, 1)}
           </p>
         </div>
-        <p className="font-nunito text-base font-semibold leading-tight text-slate-700 dark:text-slate-300">
+        <p className="text-header dark:text-dark-header font-nunito text-base font-semibold leading-tight">
           {userName}
         </p>
       </div>
       {/* Post Title */}
-      <h3 className="mb-2 font-roboto text-xl font-semibold leading-tight text-slate-800 sm:text-2xl dark:text-white">
+      <h3 className="text-headersm:text-2xl dark:text-dark-header mb-2 font-roboto text-xl font-semibold leading-tight">
         {title}
       </h3>
       {/* Post Content */}
-      <p className="mb-4 break-words font-nunito leading-snug tracking-wide text-slate-600 sm:text-lg sm:leading-none dark:text-slate-300">
+      <p className="text-paragraph dark:text-dark-paragraph mb-4 break-words font-nunito leading-snug tracking-wide sm:text-lg sm:leading-none">
         {content}
       </p>
 
@@ -58,7 +58,7 @@ export const Post = ({
           setIsfavorite={setIsfavorite}
           userID={userID}
         />
-        <p className="font-nunito text-xs font-light text-gray-400 sm:text-sm">
+        <p className="text-secondary dark:text-dark-secondary font-nunito text-xs font-light sm:text-sm">
           {$createdAt}
         </p>
       </div>
@@ -76,8 +76,8 @@ const FavoriteButton = ({
     if (!userID || !postID) return;
 
     try {
-      setIsfavorite(false);
       {
+        setIsfavorite(!isFavorite);
         isFavorite
           ? await deleteFavoritePost({ userID, postID })
           : await addFavoritePost({ userID, postID });
@@ -90,8 +90,8 @@ const FavoriteButton = ({
   return (
     <ActionButton
       onClick={handleClick}
-      variant="accent"
-      className="!px-3 !text-2xl"
+      variant={isFavorite ? "primary" : "accent"}
+      className="!px-3 !text-xl"
     >
       {isFavorite ? "Favorite" : "Add to Favorites"}
       {isFavorite ? <FaStar /> : <FaRegStar />}

@@ -18,11 +18,11 @@ export default function ActionButton({
   // Define variant styles
   const buttonStyles: { [key: string]: string } = {
     primary:
-      "bg-blue-500 text-white hover:bg-blue-400 dark:bg-blue-400 dark:hover:bg-blue-300",
+      "bg-primary text-white hover:bg-primary-dark",
     secondary:
       "bg-gray-500 text-white hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-gray-300",
     accent:
-      "bg-green-500 text-white hover:bg-green-400 dark:bg-green-400 dark:hover:bg-green-300",
+      "bg-accent text-white hover:bg-accent-dark",
     error:
       "bg-red-500/60 border-red-500 border-2  text-white hover:bg-red-400 dark:bg-red-800/70 dark:hover:bg-red-700",
     ghost:
