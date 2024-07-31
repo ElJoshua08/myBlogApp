@@ -5,6 +5,7 @@ import { ID, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { LoginProps, RegisterProps } from "@/types/interfaces";
+import useUserStore from "@/stores/useUserStore";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
