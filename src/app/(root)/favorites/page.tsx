@@ -12,15 +12,17 @@ export default function Favorites() {
   const userID = useMemo(() => user?.$id, [user]);
 
   useEffect(() => {
-    if (userLoading) return;
-
-    if (!user) {
+    if (!userLoading && !user) {
       router.push("/login");
-      return;
     }
   }, [user, userLoading, router]);
 
-  if (userLoading) return (<div className="flex flex-grow flex-col items-center justify-center">Loading...</div>);
+  if (userLoading)
+    return (
+      <div className="flex flex-grow flex-col items-center justify-center">
+        Loading...
+      </div>
+    );
 
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">

@@ -111,6 +111,7 @@ export default function LoginPage() {
 
         <ActionButton
           onClick={handleSubmit(onSubmit)}
+          variant="primary"
           className={`mt-5 ${isLoading ? "opacity-50" : ""}`}
         >
           Login
@@ -128,5 +129,4 @@ export default function LoginPage() {
       </p>
     </main>
   );
-};
-
+}

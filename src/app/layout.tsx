@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "My blog page",
+  title: "VlogApp :)",
   authors: [
     {
       name: "El joshua",
     },
   ],
   icons: {
-    icon: "/logo/logo.svg",
+    icon: "/logo/logo.png",
   },
 };
 

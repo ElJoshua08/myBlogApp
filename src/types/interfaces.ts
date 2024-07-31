@@ -1,49 +1,7 @@
-export interface PostProps {
-  $id: string;
-  $createdAt: string;
-  userID: string;
-  title: string;
-  content: string;
-  favoriteTo: Array<object>;
-  className?: string;
-  createdBy: any;
-  delay?: number;
-}
-
-export interface PostSkeletonProps {
-  delay?: number;
-}
-
+// User-related props
 export interface CredentialsPageProps {
   userId: string;
   secret: string;
-}
-
-export interface GetUserPostsProps {
-  userID: string;
-  limit?: number;
-}
-
-export interface FavoriteButtonProps {
-  postID: string;
-  isFavorite: boolean;
-  userID: string;
-  setIsfavorite: (isFavorite: boolean) => void;
-}
-
-export interface PostsGridProps {
-  userID: string;
-  type?: "default" | "favorites" | "account";
-  limit?: number;
-  className?: string;
-}
-
-export interface NavItemProps {
-  item: {
-    name: string;
-    href: string;
-    icon: React.ReactNode;
-  };
 }
 
 export interface LoginProps {
@@ -57,12 +15,32 @@ export interface RegisterProps {
   password: string;
 }
 
+export interface RecoverPasswordProps {
+  userId: string;
+  secret: string;
+  password: string;
+}
+
+// Post-related props
+export interface PostProps {
+  $id: string;
+  $createdAt: string;
+  userID: string;
+  title: string;
+  content: string;
+  favoriteTo: Array<object>;
+  className?: string;
+  createdBy: any;
+  delay?: number;
+}
+
 export interface CreatePostProps {
   title: string;
   content: string;
   userID: string;
 }
 
+// Favorite posts-related props
 export interface AddFavoritePostProps {
   userID: string;
   postID: string;
@@ -75,4 +53,50 @@ export interface GetUserFavoritePostsProps {
 export interface DeleteFavoritePostProps {
   userID: string;
   postID: string;
+}
+
+export interface FavoriteButtonProps {
+  postID: string;
+  isFavorite: boolean;
+  userID: string;
+  setIsfavorite: (isFavorite: boolean) => void;
+}
+
+// Post grid-related props
+export interface GetUserPostsProps {
+  userID: string;
+  limit?: number;
+}
+
+export interface GetPostsByTypeProps {
+  type: "default" | "favorites" | "account";
+  userID: string;
+  limit?: number;
+}
+
+export interface PostsGridProps {
+  userID: string;
+  type?: "default" | "favorites" | "account";
+  limit?: number;
+  className?: string;
+}
+
+// UI components-related props
+export interface PostSkeletonProps {
+  delay?: number;
+}
+
+export interface NavItemProps {
+  item: {
+    name: string;
+    href: string;
+    icon: React.ReactNode;
+  };
+}
+
+export interface SettingsItemProps {
+  label: string;
+  value: string;
+  onUpdate: (value: string) => Promise<void>;
+  isPassword?: boolean;
 }

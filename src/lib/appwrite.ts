@@ -10,10 +10,10 @@ export async function createSessionClient() {
 
   const session = cookies().get("authData-session");
   if (!session || !session.value) {
-    throw new Error("No session detected");
+    console.error("No session detected");
   }
 
-  client.setSession(session.value);
+  client.setSession(session!.value);
 
   return {
     get account() {

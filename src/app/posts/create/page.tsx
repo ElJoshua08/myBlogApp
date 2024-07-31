@@ -51,7 +51,7 @@ export default function CreatePostPage() {
     <div className="flex h-full w-full items-center justify-center">
       <FaSpinner className="animate-spin text-4xl text-blue-500" />
     </div>
-  ) : user ? (
+  ) : (
     <div className="flex w-full flex-grow flex-col items-center justify-center">
       <h1 className="header mb-5">Create Post</h1>
       <form
@@ -92,13 +92,6 @@ export default function CreatePostPage() {
       >
         Return to home
       </Link>
-    </div>
-  ) : (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <h1>Please login before creating a post</h1>
-      <ActionButton onClick={() => router.push("/login")} className="mt-5">
-        Login
-      </ActionButton>
     </div>
   );
 }

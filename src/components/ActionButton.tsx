@@ -11,7 +11,7 @@ interface ActionButtonProps
 export default function ActionButton({
   children,
   onClick,
-  className = "",
+  className,
   variant = "primary",
   ...props
 }: ActionButtonProps) {

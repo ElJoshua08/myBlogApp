@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { FavoriteButtonProps, PostProps } from "@/types/interfaces";
+import ActionButton from "./ActionButton";
 
 export const Post = ({
   $id,
@@ -71,44 +72,29 @@ const FavoriteButton = ({
   isFavorite,
   setIsfavorite,
 }: FavoriteButtonProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleClick = async () => {
     if (!userID || !postID) return;
 
-    if (isFavorite) {
-      try {
-        setIsLoading(true);
-        setIsfavorite(false);
-        await deleteFavoritePost({ userID, postID });
-      } catch (error) {
-        console.error("Failed to delete favorite status:", error);
-      } finally {
-        setIsLoading(false);
+    try {
+      setIsfavorite(false);
+      {
+        isFavorite
+          ? await deleteFavoritePost({ userID, postID })
+          : await addFavoritePost({ userID, postID });
       }
-    } else {
-      try {
-        setIsLoading(true);
-        setIsfavorite(true);
-        await addFavoritePost({ userID, postID });
-      } catch (error) {
-        console.error("Failed to update favorite status:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    } catch (error) {
+      console.error("Failed to delete favorite status:", error);
     }
   };
 
   return (
-    <button
+    <ActionButton
       onClick={handleClick}
-      className={`flex items-center gap-2 rounded-md px-3 py-2 font-nunito text-sm font-semibold transition-all sm:text-base ${
-        isFavorite ? "bg-primary-dark text-white" : "bg-accent text-gray-700"
-      }`}
-      disabled={isLoading}
+      variant="accent"
+      className="!px-3 !text-2xl"
     >
       {isFavorite ? "Favorite" : "Add to Favorites"}
       {isFavorite ? <FaStar /> : <FaRegStar />}
-    </button>
+    </ActionButton>
   );
 };

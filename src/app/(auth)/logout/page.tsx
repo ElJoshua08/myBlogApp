@@ -1,12 +1,10 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { logout } from "@/services/authService";
 import useUserStore from "@/stores/useUserStore";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function LogoutPage() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const { setUser } = useUserStore();
 

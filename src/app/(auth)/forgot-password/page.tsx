@@ -62,6 +62,7 @@ const NoCredentialsPage = () => {
 
       <ActionButton
         onClick={handleSubmit}
+        variant="accent"
         className={`mt-10 !text-4xl ${isLoading ? "opacity-50" : ""}`}
       >
         {isLoading && !isSent ? "Sending..." : "Send Link"}
@@ -82,14 +83,14 @@ const NoCredentialsPage = () => {
 };
 
 const CredentialsPage = ({ userId, secret }: CredentialsPageProps) => {
-  const [passwordValue, setPasswordValue] = useState("");
+  const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleUpdatePassword = async () => {
     try {
       setIsLoading(true);
-      await recoverPassword(userId!, secret!, passwordValue);
+      await recoverPassword({ userId, secret, password: value });
       router.push("/");
     } catch (err) {
       console.log("Error", err);
@@ -107,12 +108,13 @@ const CredentialsPage = ({ userId, secret }: CredentialsPageProps) => {
         type="password"
         placeholder="Password"
         variant="ghost"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
       />
 
       <ActionButton
         onClick={handleUpdatePassword}
+        variant="accent"
         className={`mt-10 !text-4xl ${isLoading ? "opacity-50" : ""}`}
       >
         Update Password

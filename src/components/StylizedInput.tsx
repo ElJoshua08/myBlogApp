@@ -3,7 +3,6 @@
 import React, { useState, forwardRef } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-// Extending the props from React.InputHTMLAttributes<HTMLInputElement>
 interface StylizedInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "primary" | "secondary" | "accent" | "error" | "ghost";

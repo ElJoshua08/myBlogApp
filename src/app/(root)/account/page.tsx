@@ -9,6 +9,7 @@ import { updatePassword, updateUsername } from "@/services/authService";
 import { StylizedInput } from "@/components/StylizedInput";
 import ActionButton from "@/components/ActionButton";
 import { Line } from "@/components/Line";
+import { SettingsItemProps } from "@/types/interfaces";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -34,7 +35,7 @@ export default function AccountPage() {
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* Posts */}
-      <section className="flex w-full flex-col justify-start items-center gap-2">
+      <section className="flex w-full flex-col items-center justify-start gap-2">
         <h1 className={`page-title self-center`}>
           Take a look at your{" "}
           <span className="page-title-accent">
@@ -86,7 +87,7 @@ export default function AccountPage() {
           onClick={() => {
             router.push("/logout");
           }}
-          className="!px-3 !text-2xl !mt-10"
+          className="!mt-10 !px-3 !text-2xl"
         >
           Logout
         </ActionButton>
@@ -100,12 +101,7 @@ const SettingsItem = ({
   value,
   onUpdate,
   isPassword = false,
-}: {
-  value: string;
-  label: string;
-  onUpdate: (value: string) => Promise<void>;
-  isPassword?: boolean;
-}) => {
+}: SettingsItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState(value);
   const [isDisabled, setIsDisabled] = useState(false);

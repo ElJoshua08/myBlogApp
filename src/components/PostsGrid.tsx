@@ -8,7 +8,11 @@ import {
   getUserPosts,
 } from "@/services/postService";
 import { PostSkeleton } from "./PostSkeleton";
-import { PostProps, PostsGridProps } from "@/types/interfaces";
+import {
+  GetPostsByTypeProps,
+  PostProps,
+  PostsGridProps,
+} from "@/types/interfaces";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -16,11 +20,11 @@ const breakpointColumnsObj = {
   700: 1,
 };
 
-const getPostsByType = async (
-  type: "default" | "favorites" | "account",
-  userID: string,
+const getPostsByType = async ({
+  type,
+  userID,
   limit = 0,
-) => {
+}: GetPostsByTypeProps) => {
   switch (type) {
     case "default":
       return await getPosts();
@@ -46,7 +50,7 @@ export const PostsGrid = ({
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const fetchedPosts = await getPostsByType(type, userID, limit);
+        const fetchedPosts = await getPostsByType({ type, userID, limit });
         setPosts(fetchedPosts);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
@@ -68,7 +72,7 @@ export const PostsGrid = ({
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 5 }).map((_, index) => (
             <PostSkeleton key={index} delay={index * 0.3 * Math.random()} />
           ))}
         </Masonry>
@@ -81,12 +85,12 @@ export const PostsGrid = ({
           {posts.map(
             (
               {
+                $id,
+                $createdAt,
+                createdBy,
                 title,
                 content,
-                $createdAt,
                 favoriteTo,
-                $id,
-                createdBy,
               }: PostProps,
               index: number,
             ) => (

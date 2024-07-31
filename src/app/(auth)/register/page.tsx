@@ -125,6 +125,7 @@ const RegisterPage = () => {
 
         <ActionButton
           onClick={handleSubmit(onSubmit)}
+          variant="primary"
           className={`mt-5 ${isLoading ? "opacity-50" : ""}`}
         >
           Create your account!

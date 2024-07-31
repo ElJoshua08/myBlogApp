@@ -14,11 +14,8 @@ export default function Home() {
   const userID = useMemo(() => user?.$id, [user]);
 
   useEffect(() => {
-    if (userLoading) return;
-
-    if (!user) {
+    if (!userLoading && !user) {
       router.push("/login");
-      return;
     }
   }, [user, router, userLoading]);
 
@@ -36,15 +33,14 @@ export default function Home() {
       {userID && <PostsGrid userID={userID} />}
 
       {/* Create new post */}
-      {user && (
-        <ActionButton
-          onClick={() => router.push("/posts/create")}
-          className="fixed bottom-0 right-0 mb-5 mr-5 !bg-accent hover:!shadow-accent/70"
-        >
-          <span className="hidden sm:inline">Create Post</span>{" "}
-          <FaPlus className="inline-block" />
-        </ActionButton>
-      )}
+      <ActionButton
+        onClick={() => router.push("/posts/create")}
+        variant="accent"
+        className="fixed bottom-0 right-0 mb-5 mr-5"
+      >
+        <span className="hidden sm:inline">Create Post</span>{" "}
+        <FaPlus className="inline-block" />
+      </ActionButton>
     </main>
   );
 }

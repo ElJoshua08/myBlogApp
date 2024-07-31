@@ -4,8 +4,7 @@ import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import { ID, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
-import { LoginProps, RegisterProps } from "@/types/interfaces";
-import useUserStore from "@/stores/useUserStore";
+import { LoginProps, RecoverPasswordProps, RegisterProps } from "@/types/interfaces";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
@@ -134,7 +133,7 @@ export const sendResetPasswordEmail = async (email: string) => {
   }
 };
 
-export const recoverPassword = async (userId: string, secret: string, password: string) => {
+export const recoverPassword = async ({ userId, secret, password }: RecoverPasswordProps) => {
   try {
     const { account } = await createAdminClient();
 

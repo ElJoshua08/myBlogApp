@@ -10,12 +10,16 @@ import {
 } from "@/types/interfaces";
 import { ID, Query } from "node-appwrite";
 
+const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID!;
+const POSTS_COLLECTION_ID = process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!;
+const USERS_COLLECTION_ID = process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!;
+
 export const getPosts = async () => {
   try {
     const { database } = await createAdminClient();
     const posts = await database.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
+      DATABASE_ID,
+      POSTS_COLLECTION_ID,
       [],
     );
 
@@ -34,8 +38,8 @@ export const getUserPosts = async ({
     const { database } = await createAdminClient();
 
     const posts = await database.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
+      DATABASE_ID,
+      POSTS_COLLECTION_ID,
       limit > 0 ? [Query.equal("createdBy", userID), Query.limit(limit)] : [Query.equal("createdBy", userID)],
     );
 
@@ -52,8 +56,8 @@ export const getUserFavoritePosts = async ({
   try {
     const { database } = await createAdminClient();
     const user = await database.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      DATABASE_ID,
+      USERS_COLLECTION_ID,
       [Query.equal("$id", userID)],
     );
 
@@ -73,8 +77,8 @@ export const addFavoritePost = async ({
   try {
     const { database } = await createAdminClient();
     const user = await database.getDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      DATABASE_ID,
+      USERS_COLLECTION_ID,
       userID,
     );
 
@@ -85,8 +89,8 @@ export const addFavoritePost = async ({
     };
 
     await database.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      DATABASE_ID,
+      USERS_COLLECTION_ID,
       userID,
       updatedUser,
     );
@@ -103,8 +107,8 @@ export const deleteFavoritePost = async ({
   try {
     const { database } = await createAdminClient();
     const user = await database.getDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      DATABASE_ID,
+      USERS_COLLECTION_ID,
       userID,
     );
 
@@ -115,8 +119,8 @@ export const deleteFavoritePost = async ({
     };
 
     await database.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!,
+      DATABASE_ID,
+      USERS_COLLECTION_ID,
       userID,
       updatedUser,
     );
@@ -134,8 +138,8 @@ export const createPost = async ({
   try {
     const { database } = await createAdminClient();
     await database.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!,
+      DATABASE_ID,
+      POSTS_COLLECTION_ID,
       ID.unique(),
       {
         title,

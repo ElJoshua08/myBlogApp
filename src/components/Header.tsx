@@ -1,6 +1,4 @@
 "use client";
-
-import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaHome, FaStar, FaUser } from "react-icons/fa";
@@ -8,8 +6,6 @@ import { NavItemProps } from "@/types/interfaces";
 import { Logo } from "./Logo";
 
 export const Header = () => {
-  const { user, loading } = useAuthenticatedUser();
-
   const navItems = [
     {
       name: "Home",
@@ -21,13 +17,11 @@ export const Header = () => {
       href: "/favorites",
       icon: <FaStar />,
     },
-    user
-      ? {
-          name: "Account",
-          href: "/account",
-          icon: <FaUser />,
-        }
-      : null,
+    {
+      name: "Account",
+      href: "/account",
+      icon: <FaUser />,
+    },
   ];
 
   return (
@@ -41,25 +35,14 @@ export const Header = () => {
       </div>
 
       {/* Nav */}
-      {!loading && (
-        <nav className="mr-5 flex">
-          <ul className="flex items-center gap-2">
-            {navItems.map(
-              (item) =>
-                item !== null && <NavItem item={item} key={item.name} />,
-            )}
 
-            {!user && (
-              <Link
-                href="/login"
-                className="ml-4 flex items-center justify-center gap-2 rounded-md bg-accent px-2 py-1 text-2xl text-gray-100 transition-colors hover:text-white"
-              >
-                Login
-              </Link>
-            )}
-          </ul>
-        </nav>
-      )}
+      <nav className="mr-5 flex">
+        <ul className="flex items-center gap-2">
+          {navItems.map((item) => (
+            <NavItem item={item} key={item.name} />
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 };
@@ -76,7 +59,7 @@ const NavItem = ({ item }: NavItemProps) => {
         className={`flex items-center gap-2 rounded-md p-2 font-nunito text-xl transition-all duration-150 sm:px-2 sm:py-1 sm:text-lg ${
           isActive
             ? "bg-blue-300 text-white dark:bg-blue-500 dark:text-white"
-            : "text-slate-500 dark:text-slate-200 dark:hover:text-slate-100 hover:bg-blue-400/60"
+            : "text-slate-500 hover:bg-blue-400/60 dark:text-slate-200 dark:hover:text-slate-100"
         }`}
       >
         {item.icon}
