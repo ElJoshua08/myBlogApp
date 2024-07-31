@@ -37,6 +37,7 @@ export const PostsGrid = ({
   userID,
   type = "default",
   limit = 0,
+  className,
 }: PostsGridProps) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +59,9 @@ export const PostsGrid = ({
   }, [userID, type, limit]);
 
   return (
-    <div className="mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4">
+    <div
+      className={`mt-10 flex w-full flex-grow flex-col items-start justify-start gap-6 px-4 ${className}`}
+    >
       {isLoading ? (
         <Masonry
           breakpointCols={breakpointColumnsObj}
@@ -66,10 +69,7 @@ export const PostsGrid = ({
           columnClassName="my-masonry-grid_column"
         >
           {Array.from({ length: 10 }).map((_, index) => (
-            <PostSkeleton
-              key={index}
-              delay={index * 0.3 * Math.random()}
-            />
+            <PostSkeleton key={index} delay={index * 0.3 * Math.random()} />
           ))}
         </Masonry>
       ) : (

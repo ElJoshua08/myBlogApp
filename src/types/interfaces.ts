@@ -32,9 +32,10 @@ export interface FavoriteButtonProps {
 }
 
 export interface PostsGridProps {
-  limit?: number;
   userID: string;
   type?: "default" | "favorites" | "account";
+  limit?: number;
+  className?: string;
 }
 
 export interface NavItemProps {

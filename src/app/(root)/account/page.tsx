@@ -34,8 +34,8 @@ export default function AccountPage() {
   return (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* Posts */}
-      <section className="relative flex flex-col items-center justify-center gap-2">
-        <h1 className={`page-title relative`}>
+      <section className="flex w-full flex-col justify-start items-center gap-2">
+        <h1 className={`page-title self-center`}>
           Take a look at your{" "}
           <span className="page-title-accent">
             <Line className="absolute top-full h-full w-full" />
@@ -86,7 +86,7 @@ export default function AccountPage() {
           onClick={() => {
             router.push("/logout");
           }}
-          className="!px-3 !text-2xl"
+          className="!px-3 !text-2xl !mt-10"
         >
           Logout
         </ActionButton>
