@@ -25,7 +25,7 @@ export const Header = () => {
   ];
 
   return (
-    <div className="bg-background-dark dark:bg-dark-background-light sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg shadow-md shadow-slate-300/60 backdrop-blur-md dark:shadow-slate-800/70">
+    <header className="bg-background-dark dark:bg-dark-background-light sticky top-0 z-10 mb-5 flex w-full items-center justify-between rounded-b-lg shadow-md shadow-slate-300/60 backdrop-blur-md dark:shadow-slate-800/70">
       {/* Logo */}
       <div className="flex items-center justify-center">
         <Logo className="size-16" />
@@ -43,7 +43,7 @@ export const Header = () => {
           ))}
         </ul>
       </nav>
-    </div>
+    </header>
   );
 };
 

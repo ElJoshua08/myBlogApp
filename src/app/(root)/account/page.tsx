@@ -10,6 +10,7 @@ import { StylizedInput } from "@/components/StylizedInput";
 import ActionButton from "@/components/ActionButton";
 import { Line } from "@/components/Line";
 import { SettingsItemProps } from "@/types/interfaces";
+import { Loading } from "@/components/Loading";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -22,18 +23,10 @@ export default function AccountPage() {
     }
   }, [user, userLoading, router]);
 
-  if (userLoading) {
-    return (
-      // Make and spinner
-      <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
-        <h1 className="text-6xl font-semibold">Loading...</h1>
-        <FaSpinner className="animate-spin" />
-      </div>
-    );
-  }
-
-  return (
-    <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
+  return userLoading ? (
+    <Loading />
+  ) : (
+    <section className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* Posts */}
       <section className="flex w-full flex-col items-center justify-start gap-2">
         <h1 className={`page-title self-center`}>
@@ -92,7 +85,7 @@ export default function AccountPage() {
           Logout
         </ActionButton>
       </section>
-    </main>
+    </section>
   );
 }
 
@@ -122,7 +115,7 @@ const SettingsItem = ({
   };
 
   return (
-    <div className="flex flex-col items-start justify-start gap-2">
+    <>
       <p className="font-nunito text-xl font-semibold text-slate-700 dark:text-slate-300">
         {label}
       </p>
@@ -143,6 +136,6 @@ const SettingsItem = ({
           {isLoading && <FaSpinner className="animate-spin" />}
         </ActionButton>
       </div>
-    </div>
+    </>
   );
 };

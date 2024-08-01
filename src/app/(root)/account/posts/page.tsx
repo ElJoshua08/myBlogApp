@@ -6,6 +6,7 @@ import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { Line } from "@/components/Line";
+import { Loading } from "@/components/Loading";
 
 export default function AccountPage() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -18,15 +19,9 @@ export default function AccountPage() {
     }
   }, [user, userLoading, router]);
 
-  if (userLoading) {
-    return (
-      <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
-        <h1 className="text-6xl font-semibold">Loading...</h1>
-      </div>
-    );
-  }
-
-  return (
+  return userLoading ? (
+    <Loading />
+  ) : (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       {/* Posts */}
       <section className="relative flex flex-col items-center justify-center gap-2">

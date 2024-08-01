@@ -6,6 +6,7 @@ import ActionButton from "@/components/ActionButton";
 import { useRouter } from "next/navigation";
 import { PostsGrid } from "@/components/PostsGrid";
 import { Line } from "@/components/Line";
+import { Loading } from "@/components/Loading";
 
 export default function Home() {
   const { user, loading: userLoading } = useAuthenticatedUser();
@@ -19,8 +20,10 @@ export default function Home() {
     }
   }, [user, router, userLoading]);
 
-  return (
-    <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
+  return userLoading ? (
+    <Loading />
+  ) : (
+    <>
       {/* User welcome */}
       <h1 className={`page-title`}>
         Welcome back{" "}
@@ -38,9 +41,9 @@ export default function Home() {
         variant="accent"
         className="fixed bottom-0 right-0 mb-3 mr-2"
       >
-        <span className="hidden sm:inline transition-all">Create Post</span>{" "}
-        <FaPlus className="inline-block text-3xl sm:text-lg transition-all" />
+        <span className="hidden transition-all sm:inline">Create Post</span>{" "}
+        <FaPlus className="inline-block text-3xl transition-all sm:text-lg" />
       </ActionButton>
-    </main>
+    </>
   );
 }

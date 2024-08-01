@@ -5,6 +5,7 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { PostsGrid } from "@/components/PostsGrid";
 import { useRouter } from "next/navigation";
 import { Line } from "@/components/Line";
+import { Loading } from "@/components/Loading";
 
 export default function Favorites() {
   const router = useRouter();
@@ -17,14 +18,9 @@ export default function Favorites() {
     }
   }, [user, userLoading, router]);
 
-  if (userLoading)
-    return (
-      <div className="flex flex-grow flex-col items-center justify-center">
-        Loading...
-      </div>
-    );
-
-  return (
+  return userLoading ? (
+    <Loading />
+  ) : (
     <main className="relative flex flex-grow flex-col items-center justify-start pb-5">
       <h1 className={`page-title`}>
         Take a look at your{" "}

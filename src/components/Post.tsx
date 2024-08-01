@@ -91,7 +91,7 @@ const FavoriteButton = ({
     <ActionButton
       onClick={handleClick}
       variant={isFavorite ? "primary" : "accent"}
-      className="!px-3 !text-xl"
+      className="!px-3 !text-base sm:text-xl"
     >
       {isFavorite ? "Favorite" : "Add to Favorites"}
       {isFavorite ? <FaStar /> : <FaRegStar />}

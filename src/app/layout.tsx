@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+  
 export const metadata: Metadata = {
   title: "VlogApp :)",
   authors: [
@@ -20,7 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <main className="relative flex w-full min-h-screen flex-grow flex-col items-center justify-center">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
