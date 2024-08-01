@@ -37,13 +37,13 @@ export const getUserPosts = async ({
   try {
     const { database } = await createAdminClient();
 
-    const posts = await database.listDocuments(
+    const user = await database.getDocument(
       DATABASE_ID,
-      POSTS_COLLECTION_ID,
-      limit > 0 ? [Query.equal("createdBy", userID), Query.limit(limit)] : [Query.equal("createdBy", userID)],
+      USERS_COLLECTION_ID,
+      userID,
     );
 
-    return posts?.documents;
+    return user?.createdPosts.slice(0, limit);
   } catch (error) {
     console.error("Error during fetching posts:", error);
     throw error;
@@ -55,13 +55,13 @@ export const getUserFavoritePosts = async ({
 }: GetUserFavoritePostsProps) => {
   try {
     const { database } = await createAdminClient();
-    const user = await database.listDocuments(
+    const user = await database.getDocument(
       DATABASE_ID,
       USERS_COLLECTION_ID,
-      [Query.equal("$id", userID)],
+      userID,
     );
 
-    const favoritePosts = user.documents[0]?.favoritePosts;
+    const favoritePosts = user?.favoritePosts;
 
     return favoritePosts;
   } catch (error) {
