@@ -1,10 +1,19 @@
 "use server";
-
-import { createSessionClient, createAdminClient } from "@/lib/appwrite";
-import { ID, Query } from "node-appwrite";
+import {
+  createSessionClient,
+  createAdminClient,
+  ID,
+  Query,
+  OAuthProvider,
+} from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
-import { LoginProps, RecoverPasswordProps, RegisterProps } from "@/types/interfaces";
+import {
+  LoginProps,
+  RecoverPasswordProps,
+  RegisterProps,
+} from "@/types/interfaces";
+import { Client, Account } from "appwrite";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
@@ -19,6 +28,30 @@ export const login = async ({ email, password }: LoginProps) => {
     });
   } catch (error) {
     console.error("Error during login:", error);
+    throw error;
+  }
+};
+
+export const loginWithGoogle = async () => {
+  try {
+    console.log("Logging in with Google");
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+    const client = new Client()
+      .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!); // Your project ID
+
+    const account = new Account(client);
+
+    // Go to OAuth provider login page
+    account.createOAuth2Session(
+      OAuthProvider.Google,
+      baseUrl,
+      `${baseUrl}/success`,
+      [],
+    );
+  } catch (error) {
+    console.error("Error during login with google:", error);
     throw error;
   }
 };
@@ -69,6 +102,8 @@ export const getLoggedInUser = async () => {
   try {
     const { account } = await createSessionClient();
     const user = await account.get();
+
+    console.log(user);
     return parseStringify(user);
   } catch (error) {
     return null;
@@ -133,7 +168,11 @@ export const sendResetPasswordEmail = async (email: string) => {
   }
 };
 
-export const recoverPassword = async ({ userId, secret, password }: RecoverPasswordProps) => {
+export const recoverPassword = async ({
+  userId,
+  secret,
+  password,
+}: RecoverPasswordProps) => {
   try {
     const { account } = await createAdminClient();
 

@@ -31,11 +31,11 @@ export default function RootLayout({
           content="71lOWO-kMpqb6Fg-UmWYsiE6d5y_GjxB122mkNoFd9w"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning={true}>
         <main className="relative flex min-h-screen w-full flex-grow flex-col items-center justify-center">
           {children}
         </main>
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

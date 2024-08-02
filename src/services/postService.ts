@@ -1,14 +1,13 @@
 "use server";
 
-import { GetUserPostsProps } from "./../types/interfaces";
-import { createAdminClient } from "@/lib/appwrite";
+import { GetUserPostsProps } from "@/types/interfaces";
+import { createAdminClient, ID } from "@/lib/appwrite";
 import {
   AddFavoritePostProps,
   CreatePostProps,
   DeleteFavoritePostProps,
   GetUserFavoritePostsProps,
 } from "@/types/interfaces";
-import { ID, Query } from "node-appwrite";
 
 const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID!;
 const POSTS_COLLECTION_ID = process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!;
