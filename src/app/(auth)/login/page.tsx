@@ -8,10 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-import { FaSpinner } from "react-icons/fa";
+import { FaGoogle, FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
+import { Loading } from "@/components/Loading";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -48,15 +49,8 @@ export default function LoginPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <FaSpinner className="animate-spin text-4xl text-gray-500" />
-      </div>
-    );
-  }
 
-  return (
+  return isLoading ? <Loading /> : (
     <main className="flex flex-col items-center justify-center gap-5">
       <h1 className="header">Login</h1>
 
@@ -127,6 +121,7 @@ export default function LoginPage() {
           Register here
         </Link>
       </p>
+      <h1 className="font-roboto text-2xl font-bold text-white">OR</h1>
       <LoginWithGoogleButton />
     </main>
   );
@@ -141,12 +136,14 @@ const LoginWithGoogleButton = () => {
     setIsLoading(false);
   };
 
-  return ( 
-    <button 
-      onClick={handleClick} 
-      className={`flex w-full items-center justify-center rounded-md border border-transparent bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 ${isLoading ? "opacity-50" : ""}`} 
+  return (
+    <ActionButton
+      onClick={handleClick}
+      className={`text-md flex w-full items-center justify-center rounded-md border border-transparent px-4 py-2 font-medium ${isLoading ? "opacity-50" : ""}`}
+      variant="secondary"
     >
-      Login with Google
-    </button>
+      <FaGoogle /> Login with Google
+      {isLoading && <FaSpinner className="animate-spin" />}
+    </ActionButton>
   );
-}
+};

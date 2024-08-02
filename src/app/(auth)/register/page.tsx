@@ -12,6 +12,7 @@ import { FaSpinner } from "react-icons/fa";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
+import { Loading } from "@/components/Loading";
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
@@ -51,15 +52,7 @@ const RegisterPage = () => {
     }
   };
 
-  if (userLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <FaSpinner className="animate-spin text-4xl text-gray-500" />
-      </div>
-    );
-  }
-
-  return (
+  return isLoading ? <Loading /> : (
     <main className="flex flex-col items-center justify-center gap-5">
       <h1 className="header">Register</h1>
 

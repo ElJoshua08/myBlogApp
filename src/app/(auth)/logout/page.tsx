@@ -3,6 +3,7 @@ import { logout } from "@/services/authService";
 import useUserStore from "@/stores/useUserStore";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Loading } from "@/components/Loading";
 
 export default function LogoutPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,24 +16,20 @@ export default function LogoutPage() {
     setIsLoading(false);
   }, [setUser]);
 
-  return (
+  return isLoading ? <Loading /> : (
     <div className="flex h-full w-full flex-grow flex-col items-center justify-center gap-4">
-      {isLoading ? (
-        <h1 className="header text-center">We are logging you out...</h1>
-      ) : (
-        <>
-          <h1 className="header text-center !text-5xl !leading-normal sm:!text-6xl">
-            You can now safely close this tab
-          </h1>
+      <>
+        <h1 className="header text-center !text-5xl !leading-normal sm:!text-6xl">
+          You can now safely close this tab
+        </h1>
 
-          <Link
-            href={"/login"}
-            className="text-paragraph dark:text-dark-paragraph text-center text-lg hover:text-primary-dark"
-          >
-            or click here to login again
-          </Link>
-        </>
-      )}
+        <Link
+          href={"/login"}
+          className="text-center text-lg text-paragraph hover:text-primary-dark dark:text-dark-paragraph"
+        >
+          or click here to login again
+        </Link>
+      </>
     </div>
   );
 }

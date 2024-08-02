@@ -75,6 +75,7 @@ export const logout = async () => {
 
     cookies().delete("auth-session");
     await account.deleteSession("current");
+
   } catch (error) {
     console.error("Error during logout:", error);
     throw error;
