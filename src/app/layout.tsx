@@ -32,7 +32,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning={true}>
-        <main className="relative flex min-h-screen w-full flex-grow flex-col items-center justify-center">
+        <main className="relative flex min-h-screen w-full flex-grow flex-col items-center justify-start">
           {children}
         </main>
         {/* <Analytics /> */}

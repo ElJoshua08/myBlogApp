@@ -26,7 +26,7 @@ export default function AccountPage() {
   return userLoading ? (
     <Loading />
   ) : (
-    <section className="relative flex flex-grow flex-col items-center justify-start pb-5">
+    <section className="relative flex flex-grow flex-col items-center justify-start pb-5 w-full">
       {/* Posts */}
       <section className="flex w-full flex-col items-center justify-start gap-2">
         <h1 className={`page-title self-center`}>

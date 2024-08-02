@@ -14,11 +14,11 @@ export default function Home() {
   const router = useRouter();
   const userID = useMemo(() => user?.$id, [user]);
 
-  // useEffect(() => {
-  //   if (!userLoading && !user) {
-  //     router.push("/login");
-  //   }
-  // }, [user, router, userLoading]);
+  useEffect(() => {
+    if (!userLoading && !user) {
+      router.push("/login");
+    }
+  }, [user, router, userLoading]);
 
   return userLoading ? (
     <Loading />

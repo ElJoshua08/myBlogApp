@@ -12,8 +12,6 @@ import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import ActionButton from "@/components/ActionButton";
 import { StylizedInput } from "@/components/StylizedInput";
-import { Account, Client } from "appwrite";
-import { OAuthProvider } from "node-appwrite";
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -136,25 +134,11 @@ export default function LoginPage() {
 
 const LoginWithGoogleButton = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleClick = async () => {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-    const client = new Client()
-      .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!); // Your project ID
-
-    const account = new Account(client);
-
-    // Go to OAuth provider login page
-    account.createOAuth2Session(
-      OAuthProvider.Google,
-      `${baseUrl}/success`,
-      `${baseUrl}/failure`,
-      [],
-    );
-
+    setIsLoading(true);
+    await loginWithGoogle();
+    setIsLoading(false);
   };
 
   return ( 

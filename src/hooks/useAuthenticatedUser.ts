@@ -11,7 +11,6 @@ export const useAuthenticatedUser = () => {
   useEffect(() => {
     // If user is already logged in, then we can use the userStore to get the user
     if (userStoreUser) {
-      console.log("User is already logged in", userStoreUser);
       setUser(userStoreUser);
       setLoading(false);
       return;
@@ -20,7 +19,6 @@ export const useAuthenticatedUser = () => {
     // If user is not logged in, then we need to fetch the user
     const fetchUser = async () => {
       const fetchedUser = await getLoggedInUser();
-      console.log("Fetched user", fetchedUser);
       setUser(fetchedUser);
       setLoading(false);
 

@@ -1,67 +1,57 @@
 "use server";
-import {
-  createSessionClient,
-  createAdminClient,
-  ID,
-  Query,
-  OAuthProvider,
-} from "@/lib/appwrite";
-import { cookies } from "next/headers";
-import { parseStringify } from "@/lib/utils";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { createSessionClient, createAdminClient } from "@/lib/appwrite";
 import {
   LoginProps,
   RecoverPasswordProps,
   RegisterProps,
 } from "@/types/interfaces";
-import { Client, Account } from "appwrite";
+import { cookies } from "next/headers";
+import { ID, Query, OAuthProvider } from "node-appwrite";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
-    const { account } = await createAdminClient();
+    const { account } = await createSessionClient();
+
     const session = await account.createEmailPasswordSession(email, password);
 
-    cookies().set("authData-session", session.secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
+    console.log("session", session);
+    console.log(await account.get());
   } catch (error) {
     console.error("Error during login:", error);
     throw error;
   }
 };
 
-export const loginWithGoogle = async () => {
-  try {
-    console.log("Logging in with Google");
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+export async function loginWithGoogle() {
+  const { account } = await createAdminClient();
 
-    const client = new Client()
-      .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!); // Your project ID
+  const origin = headers().get("origin");
 
-    const account = new Account(client);
+  const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Google,
+    `${origin}/oauth`,
+    `${origin}/register`,
+  );
 
-    // Go to OAuth provider login page
-    account.createOAuth2Session(
-      OAuthProvider.Google,
-      baseUrl,
-      `${baseUrl}/success`,
-      [],
-    );
-  } catch (error) {
-    console.error("Error during login with google:", error);
-    throw error;
-  }
-};
+  return redirect(redirectUrl);
+}
 
 export const register = async ({ name, email, password }: RegisterProps) => {
   try {
-    const { account, database } = await createAdminClient();
+    const { account } = await createSessionClient();
+    const { database } = await createAdminClient();
 
     const user = await account.create(ID.unique(), email, password, name);
     const session = await account.createEmailPasswordSession(email, password);
+
+    cookies().set("auth-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
 
     await database.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
@@ -73,13 +63,6 @@ export const register = async ({ name, email, password }: RegisterProps) => {
       },
       [],
     );
-
-    cookies().set("authData-session", session.secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
   } catch (error) {
     console.error("Error during registration:", error);
     throw error;
@@ -88,9 +71,9 @@ export const register = async ({ name, email, password }: RegisterProps) => {
 
 export const logout = async () => {
   try {
-    const { account } = await createSessionClient();
+    const { account } = await createAdminClient();
 
-    cookies().delete("authData-session");
+    cookies().delete("auth-session");
     await account.deleteSession("current");
   } catch (error) {
     console.error("Error during logout:", error);
@@ -98,22 +81,20 @@ export const logout = async () => {
   }
 };
 
-export const getLoggedInUser = async () => {
+export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    const user = await account.get();
-
-    console.log(user);
-    return parseStringify(user);
+    return await account.get();
   } catch (error) {
     return null;
   }
-};
+}
 
 export const updateUsername = async (name: string) => {
   try {
     const { account } = await createSessionClient();
     const { database } = await createAdminClient();
+
     const user = await account.updateName(name);
 
     await database.updateDocument(
@@ -134,6 +115,7 @@ export const updateUsername = async (name: string) => {
 export const updatePassword = async (password: string) => {
   try {
     const { account } = await createSessionClient();
+
     await account.updatePassword(password);
   } catch (error) {
     console.error("Error during update password:", error);
@@ -173,9 +155,9 @@ export const recoverPassword = async ({
   secret,
   password,
 }: RecoverPasswordProps) => {
-  try {
-    const { account } = await createAdminClient();
+  const { account } = await createAdminClient();
 
+  try {
     await account.updateRecovery(userId, secret, password);
   } catch (error) {
     console.error("Error during recover password:", error);
