@@ -13,6 +13,7 @@ import {
   PostProps,
   PostsGridProps,
 } from "@/types/interfaces";
+import useUserStore from "@/stores/useUserStore";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -45,6 +46,7 @@ export const PostsGrid = ({
 }: PostsGridProps) => {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useUserStore();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -103,7 +105,7 @@ export const PostsGrid = ({
                 favoriteTo={
                   type === "favorites" ? [{ $id: userID }] : favoriteTo
                 }
-                createdBy={createdBy}
+                createdBy={createdBy || user.name}
                 content={content}
                 className="break-inside-avoid"
                 delay={index * 0.3 * (Math.random() / 2)}

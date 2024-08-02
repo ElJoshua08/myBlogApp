@@ -12,12 +12,17 @@ import { ID, Query, OAuthProvider } from "node-appwrite";
 
 export const login = async ({ email, password }: LoginProps) => {
   try {
-    const { account } = await createSessionClient();
+    const { account } = await createAdminClient();
 
     const session = await account.createEmailPasswordSession(email, password);
 
-    console.log("session", session);
-    console.log(await account.get());
+    cookies().set("auth-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
   } catch (error) {
     console.error("Error during login:", error);
     throw error;

@@ -43,6 +43,7 @@ export const getUserPosts = async ({
       userID,
     );
 
+
     return user?.createdPosts.slice(0, limit);
   } catch (error) {
     console.error("Error during fetching posts:", error);

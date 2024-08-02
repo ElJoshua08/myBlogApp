@@ -20,7 +20,11 @@ export const Post = ({
   const [isFavorite, setIsfavorite] = useState(
     favoriteTo.some(({ $id }: any) => $id === userID),
   );
-  const userName = createdBy?.name || "Anonymous";
+  const userName = createdBy?.name
+    ? createdBy.name
+    : createdBy
+      ? createdBy
+      : "Anonymous";
 
   return (
     <motion.div
@@ -33,20 +37,20 @@ export const Post = ({
       <div className="mb-2 flex items-center gap-2">
         <div className="flex size-9 items-center justify-center rounded-full border border-slate-400 bg-slate-300 dark:border-2 dark:border-slate-500 dark:bg-slate-600">
           {/* TODO: get username initials */}
-          <p className="text-header dark:text-dark-header font-nunito text-2xl font-bold">
+          <p className="font-nunito text-2xl font-bold text-header dark:text-dark-header">
             {userName.slice(0, 1)}
           </p>
         </div>
-        <p className="text-header dark:text-dark-header font-nunito text-base font-semibold leading-tight">
+        <p className="font-nunito text-base font-semibold leading-tight text-header dark:text-dark-header">
           {userName}
         </p>
       </div>
       {/* Post Title */}
-      <h3 className="text-headersm:text-2xl dark:text-dark-header mb-2 font-roboto text-xl font-semibold leading-tight">
+      <h3 className="text-headersm:text-2xl mb-2 font-roboto text-xl font-semibold leading-tight dark:text-dark-header">
         {title}
       </h3>
       {/* Post Content */}
-      <p className="text-paragraph dark:text-dark-paragraph mb-4 break-words font-nunito leading-snug tracking-wide sm:text-lg sm:leading-none">
+      <p className="mb-4 break-words font-nunito leading-snug tracking-wide text-paragraph sm:text-lg sm:leading-none dark:text-dark-paragraph">
         {content}
       </p>
 
@@ -58,7 +62,7 @@ export const Post = ({
           setIsfavorite={setIsfavorite}
           userID={userID}
         />
-        <p className="text-secondary dark:text-dark-secondary font-nunito text-xs font-light sm:text-sm">
+        <p className="font-nunito text-xs font-light text-secondary sm:text-sm dark:text-dark-secondary">
           {$createdAt}
         </p>
       </div>
