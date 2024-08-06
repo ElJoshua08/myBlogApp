@@ -45,8 +45,7 @@ export async function loginWithGoogle() {
 
 export const register = async ({ name, email, password }: RegisterProps) => {
   try {
-    const { account } = await createSessionClient();
-    const { database } = await createAdminClient();
+    const { database, account } = await createAdminClient();
 
     const user = await account.create(ID.unique(), email, password, name);
     const session = await account.createEmailPasswordSession(email, password);
@@ -98,8 +97,7 @@ export async function getLoggedInUser() {
 
 export const updateUsername = async (name: string) => {
   try {
-    const { account } = await createSessionClient();
-    const { database } = await createAdminClient();
+    const { database, account } = await createAdminClient();
 
     const user = await account.updateName(name);
 
@@ -120,7 +118,7 @@ export const updateUsername = async (name: string) => {
 
 export const updatePassword = async (password: string) => {
   try {
-    const { account } = await createSessionClient();
+    const { account } = await createAdminClient();
 
     await account.updatePassword(password);
   } catch (error) {
