@@ -1,10 +1,22 @@
 "use client";
-import { addFavoritePost, deleteFavoritePost } from "@/services/postService";
+
 import { useState } from "react";
-import { FaRegStar, FaStar } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaComment,
+  FaPaperPlane,
+  FaRegComment,
+  FaRegStar,
+  FaStar,
+} from "react-icons/fa";
+import {
+  addFavoritePost,
+  createPostComment,
+  deleteFavoritePost,
+} from "@/services/postService";
 import { FavoriteButtonProps, PostProps } from "@/types/interfaces";
-import ActionButton from "./ActionButton";
+import { parseToReadableDate } from "@/lib/utils";
 
 export const Post = ({
   $id,
@@ -14,58 +26,127 @@ export const Post = ({
   content,
   createdBy,
   favoriteTo,
-  className,
+  className = "",
   delay = 0,
+  showComments = false,
+  comments = null,
 }: PostProps) => {
-  const [isFavorite, setIsfavorite] = useState(
-    favoriteTo.some(({ $id }: any) => $id === userID),
+  const router = useRouter();
+  const [isFavorite, setIsFavorite] = useState(
+    favoriteTo?.some(({ $id }: any) => $id === userID) || false,
   );
-  const userName = createdBy?.name
-    ? createdBy.name
-    : createdBy
-      ? createdBy
-      : "Anonymous";
+  const [commentValue, setCommentValue] = useState("");
+
+  const userName = createdBy?.name || "Anonymous";
+
+  const handleClick = () => {
+    router.push(`/posts/${$id}`);
+  };
+
+  const createComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userID) return;
+
+    try {
+      await createPostComment({ userID, postID: $id, content: commentValue });
+      setCommentValue(""); // Clear input field after successful comment creation
+    } catch (error) {
+      console.error("Error during comment creation", error);
+    }
+  };
 
   return (
     <motion.div
-      className={`relative flex flex-grow flex-col items-start justify-start overflow-hidden rounded-md bg-gray-300/50 p-4 shadow-md shadow-gray-400/60 dark:border-2 dark:border-slate-500 dark:bg-slate-700 dark:shadow-none ${className}`}
+      className={`relative flex cursor-pointer flex-col rounded-md bg-gray-300/50 p-4 shadow-md dark:border-slate-500 dark:bg-slate-700 dark:shadow-none ${className}`}
       initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.5, delay }}
+      whileHover={{
+        borderColor: "rgba(255, 255, 255, 0.8)",
+        transition: { duration: 0.15 },
+      }}
     >
-      {/* Avartar and Username */}
       <div className="mb-2 flex items-center gap-2">
-        <div className="flex size-9 items-center justify-center rounded-full border border-slate-400 bg-slate-300 dark:border-2 dark:border-slate-500 dark:bg-slate-600">
-          {/* TODO: get username initials */}
-          <p className="font-nunito text-2xl font-bold text-header dark:text-dark-header">
-            {userName.slice(0, 1)}
+        <div className="flex h-9 w-9 items-center justify-center rounded-full border bg-slate-300 dark:border-slate-500 dark:bg-slate-600">
+          <p className="text-2xl font-bold text-header dark:text-dark-header">
+            {userName.charAt(0)}
           </p>
         </div>
-        <p className="font-nunito text-base font-semibold leading-tight text-header dark:text-dark-header">
+        <p className="text-base font-semibold text-header dark:text-dark-header">
           {userName}
         </p>
       </div>
-      {/* Post Title */}
-      <h3 className="text-headersm:text-2xl mb-2 font-roboto text-xl font-semibold leading-tight dark:text-dark-header">
+
+      <h3
+        className="text-headersm:text-2xl mb-2 text-xl font-semibold dark:text-dark-header"
+        onClick={handleClick}
+      >
         {title}
       </h3>
-      {/* Post Content */}
-      <p className="mb-4 break-words font-nunito leading-snug tracking-wide text-paragraph sm:text-lg sm:leading-none dark:text-dark-paragraph">
+
+      <p
+        className="mb-4 break-words text-paragraph dark:text-dark-paragraph"
+        onClick={handleClick}
+      >
         {content}
       </p>
 
-      {/* Created At and Add to Favorites */}
-      <div className="flex w-full items-end justify-between">
-        <FavoriteButton
-          postID={$id}
-          isFavorite={isFavorite}
-          setIsfavorite={setIsfavorite}
-          userID={userID}
-        />
-        <p className="font-nunito text-xs font-light text-secondary sm:text-sm dark:text-dark-secondary">
+      <div className="flex items-end justify-between">
+        <div className="flex items-center gap-4">
+          <FavoriteButton
+            postID={$id}
+            userID={userID}
+            isFavorite={isFavorite}
+            setIsFavorite={setIsFavorite}
+          />
+          {!showComments && (
+            <FaRegComment
+              className="cursor-pointer text-2xl text-gray-400"
+              onClick={() => router.push(`/posts/${$id}`)}
+            />
+          )}
+        </div>
+        <p className="text-xs font-light text-secondary dark:text-dark-secondary">
           {$createdAt}
         </p>
       </div>
+
+      {showComments && (
+        <div className="mt-4 flex flex-col gap-4">
+          {!comments ? (
+            <div>
+              <p className="text-xs font-light text-secondary dark:text-dark-secondary">
+                No comments yet, be the first one to comment!
+              </p>
+              <form onSubmit={createComment} className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  className="w-full rounded-md border-b-2 border-gray-400 p-2 dark:border-gray-600"
+                  value={commentValue}
+                  onChange={(e) => setCommentValue(e.target.value)}
+                />
+                <button type="submit">
+                  <FaPaperPlane className="text-2xl text-gray-400" />
+                </button>
+              </form>
+            </div>
+          ) : (
+            <p className="text-xs font-light text-secondary dark:text-dark-secondary">
+              {comments.length} Comments
+            </p>
+          )}
+          {comments?.map((comment: any) => (
+            <div key={comment.$id} className="flex flex-col gap-2">
+              <p className="text-xs font-light text-secondary dark:text-dark-secondary">
+                {parseToReadableDate(comment.$createdAt)}
+              </p>
+              <p className="text-base font-semibold text-paragraph dark:text-dark-paragraph">
+                {comment.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 };
@@ -74,17 +155,17 @@ const FavoriteButton = ({
   postID,
   userID,
   isFavorite,
-  setIsfavorite,
+  setIsFavorite,
 }: FavoriteButtonProps) => {
   const handleClick = async () => {
     if (!userID || !postID) return;
 
     try {
-      {
-        setIsfavorite(!isFavorite);
-        isFavorite
-          ? await deleteFavoritePost({ userID, postID })
-          : await addFavoritePost({ userID, postID });
+      setIsFavorite(!isFavorite);
+      if (isFavorite) {
+        await deleteFavoritePost({ userID, postID });
+      } else {
+        await addFavoritePost({ userID, postID });
       }
     } catch (error) {
       console.error("Error during favorite status update", error);
@@ -92,13 +173,29 @@ const FavoriteButton = ({
   };
 
   return (
-    <ActionButton
-      onClick={handleClick}
-      variant={isFavorite ? "primary" : "accent"}
-      className="!px-3 !text-base sm:text-xl"
-    >
-      {isFavorite ? "Favorite" : "Add to Favorites"}
-      {isFavorite ? <FaStar /> : <FaRegStar />}
-    </ActionButton>
+    <div onClick={handleClick} className="cursor-pointer text-3xl">
+      <AnimatePresence initial={false} mode="wait">
+        {isFavorite ? (
+          <motion.div
+            key="star"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+          >
+            <FaStar className="text-accent" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="regStar"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+          >
+            <FaRegStar className="text-gray-400" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
+

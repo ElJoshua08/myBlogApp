@@ -1,4 +1,3 @@
-// src/lib/server/appwrite.js
 "use server";
 import { Client, Account, Databases } from "node-appwrite";
 import { cookies } from "next/headers";

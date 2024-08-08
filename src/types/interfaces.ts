@@ -32,12 +32,24 @@ export interface PostProps {
   className?: string;
   createdBy: any;
   delay?: number;
+  showComments?: boolean;
+  comments?: any;
 }
 
 export interface CreatePostProps {
   title: string;
   content: string;
   userID: string;
+}
+
+export interface CreatePostCommentProps {
+  userID: string;
+  postID: string;
+  content: string;
+}
+
+export interface GetPostProps {
+  postID: string;
 }
 
 // Favorite posts-related props

@@ -1,6 +1,6 @@
 "use server";
 
-import { GetUserPostsProps } from "@/types/interfaces";
+import { CreatePostCommentProps, GetPostProps, GetUserPostsProps } from "@/types/interfaces";
 import { createAdminClient } from "@/lib/appwrite";
 import {
   AddFavoritePostProps,
@@ -13,6 +13,7 @@ import { ID } from "node-appwrite";
 const DATABASE_ID = process.env.NEXT_PUBLIC_DATABASE_ID!;
 const POSTS_COLLECTION_ID = process.env.NEXT_PUBLIC_POSTS_COLLECTION_ID!;
 const USERS_COLLECTION_ID = process.env.NEXT_PUBLIC_USERS_COLLECTION_ID!;
+const COMMENTS_COLLECTION_ID = process.env.NEXT_PUBLIC_COMMENTS_COLLECTION_ID!;
 
 export const getPosts = async () => {
   try {
@@ -43,7 +44,6 @@ export const getUserPosts = async ({
       userID,
     );
 
-
     return user?.createdPosts.slice(0, limit);
   } catch (error) {
     console.error("Error during fetching posts:", error);
@@ -67,6 +67,23 @@ export const getUserFavoritePosts = async ({
     return favoritePosts;
   } catch (error) {
     console.error("Error during fetching posts:", error);
+    throw error;
+  }
+};
+
+export const getPost = async ({ postID }: GetPostProps) => {
+  try {
+    
+    const { database } = await createAdminClient();
+    const post = await database.getDocument(
+      DATABASE_ID,
+      POSTS_COLLECTION_ID,
+      postID,
+    );
+
+    return post;
+  } catch (error) {
+    console.error("Error during fetching post:", error);
     throw error;
   }
 };
@@ -154,3 +171,30 @@ export const createPost = async ({
     throw error;
   }
 };
+
+export const createPostComment = async ({
+  userID,
+  postID,
+  content,
+}: CreatePostCommentProps) => {
+  try {
+    console.log("creating comment")
+
+  const { database } = await createAdminClient();
+  const comment = await database.createDocument(
+    DATABASE_ID,
+    COMMENTS_COLLECTION_ID,
+    ID.unique(),
+    {
+      content,
+      createdBy: userID,
+      commentedOnPost: postID,
+    },
+    [],
+    );
+      console.log(comment);
+
+} catch (error) {
+  console.error("Error during creating post comment:", error);
+  throw error;
+}}
