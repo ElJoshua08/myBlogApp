@@ -42,6 +42,7 @@ export default function PostPage() {
         favoriteTo={post.favoriteTo}
         className="w-full"
         showComments={true}
+        comments={post.comments}
       />
     </div>
   ) : (

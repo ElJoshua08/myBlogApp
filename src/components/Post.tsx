@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaComment,
   FaPaperPlane,
   FaRegComment,
   FaRegStar,
@@ -35,6 +34,8 @@ export const Post = ({
   const [isFavorite, setIsFavorite] = useState(
     favoriteTo?.some(({ $id }: any) => $id === userID) || false,
   );
+  console.log(comments);
+
   const [commentValue, setCommentValue] = useState("");
 
   const userName = createdBy?.name || "Anonymous";
@@ -113,7 +114,7 @@ export const Post = ({
 
       {showComments && (
         <div className="mt-4 flex flex-col gap-4">
-          {!comments ? (
+          {comments?.length === 0 ? (
             <div>
               <p className="text-xs font-light text-secondary dark:text-dark-secondary">
                 No comments yet, be the first one to comment!
@@ -132,13 +133,13 @@ export const Post = ({
             </div>
           ) : (
             <p className="text-xs font-light text-secondary dark:text-dark-secondary">
-              {comments.length} Comments
+              {comments?.length} Comments
             </p>
           )}
           {comments?.map((comment: any) => (
             <div key={comment.$id} className="flex flex-col gap-2">
               <p className="text-xs font-light text-secondary dark:text-dark-secondary">
-                {parseToReadableDate(comment.$createdAt)}
+                {parseToReadableDate(new Date(comment.$createdAt))}
               </p>
               <p className="text-base font-semibold text-paragraph dark:text-dark-paragraph">
                 {comment.content}
