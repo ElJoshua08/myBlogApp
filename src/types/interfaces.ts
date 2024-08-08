@@ -71,7 +71,7 @@ export interface FavoriteButtonProps {
   postID: string;
   isFavorite: boolean;
   userID: string;
-  setIsfavorite: (isFavorite: boolean) => void;
+  setIsFavorite: (isFavorite: boolean) => void;
 }
 
 // Post grid-related props
