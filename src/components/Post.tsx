@@ -58,14 +58,10 @@ export const Post = ({
 
   return (
     <motion.div
-      className={`relative flex cursor-pointer flex-col rounded-md bg-gray-300/50 p-4 shadow-md dark:border-slate-500 dark:bg-slate-700 dark:shadow-none ${className}`}
+      className={`relative flex cursor-pointer flex-col rounded-md bg-gray-300/50 p-4 shadow-md border-2 transition-colors border-transparent hover:border-white dark:border-slate-500 dark:bg-slate-700 dark:shadow-none ${className}`}
       initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.5, delay }}
-      whileHover={{
-        borderColor: "rgba(255, 255, 255, 0.8)",
-        transition: { duration: 0.15 },
-      }}
     >
       <div className="mb-2 flex items-center gap-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-full border bg-slate-300 dark:border-slate-500 dark:bg-slate-600">
